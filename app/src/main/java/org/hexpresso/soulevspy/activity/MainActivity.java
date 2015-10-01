@@ -1,5 +1,6 @@
 package org.hexpresso.soulevspy.activity;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.hexpresso.soulevspy.R;
 
@@ -62,6 +64,25 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
 
         // TODO : Check if bluetooth is set! if not, disable
+        BluetoothAdapter bta = BluetoothAdapter.getDefaultAdapter();
+        if(bta==null)
+        {
+            menu.getItem(0).setEnabled(false);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch(id) {
+            case R.id.action_connect:
+                Toast.makeText(getApplicationContext(), "Connect", Toast.LENGTH_LONG).show();
+                break;
+            default:
+                break;
+        }
+
         return true;
     }
 
@@ -69,8 +90,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item click
         int id = item.getItemId();
-        switch(id)
-        {
+        switch(id) {
             case R.id.nav_dashboard:
                 break;
             case R.id.nav_settings:
