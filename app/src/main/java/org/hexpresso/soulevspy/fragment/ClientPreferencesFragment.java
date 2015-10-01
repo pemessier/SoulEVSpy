@@ -1,0 +1,142 @@
+package org.hexpresso.soulevspy.fragment;
+
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceFragment;
+
+import org.hexpresso.soulevspy.R;
+import org.hexpresso.soulevspy.util.ClientSharedPreferences;
+
+import java.util.ArrayList;
+import java.util.Set;
+
+/**
+ * Created by pemessier on 2015-09-28.
+ */
+public class ClientPreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private ClientSharedPreferences preferences;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        preferences = new ClientSharedPreferences(getActivity());
+
+        // Set the shared preferences name
+        getPreferenceManager().setSharedPreferencesName(ClientSharedPreferences.SHARED_PREFERENCES_NAME);
+
+        // Load the preferences from an XML resource
+        addPreferencesFromResource(R.xml.preferences);
+
+        // Load Bluetooth devices list
+        loadBluetoothDevices();
+
+        // Set the summaries
+        setApplicationVersion();
+        onSharedPreferenceChanged(null, "");
+    }
+
+    @Override
+    public void onPause() {
+        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        //onSharedPreferenceChanged(null, "");
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        // Updating all preferences summary...
+
+        ListPreference listPref = (ListPreference) findPreference(getString(R.string.key_list_units_distance));
+        setListPreferenceSummary( listPref, preferences.getUnitsDistanceStringValue() );
+
+        listPref = (ListPreference) findPreference(getString(R.string.key_list_units_energy_consumption));
+        setListPreferenceSummary(listPref, preferences.getUnitsEnergyConsumptionStringValue());
+
+        listPref = (ListPreference) findPreference(getString(R.string.key_list_units_temperature));
+        setListPreferenceSummary( listPref, preferences.getUnitsTemperatureStringValue() );
+
+        listPref = (ListPreference) findPreference(getString(R.string.key_list_bluetooth_device));
+        String btSummary = getString(R.string.pref_bluetooth_device_summary);
+        String btAddress = preferences.getBluetoothDeviceStringValue();
+        BluetoothAdapter bta = BluetoothAdapter.getDefaultAdapter();
+        if ((btAddress != preferences.DEFAULT_BLUETOOTH_DEVICE) && (bta != null))
+        {
+            // Set the bluetooth adapter name as summary
+            try {
+                BluetoothDevice device = bta.getRemoteDevice(btAddress);
+                btSummary = device.getName();
+            } catch (IllegalArgumentException e) {
+                // Do nothing, we will set the default summary instead
+            }
+        }
+        listPref.setSummary(btSummary);
+
+        // Force refresh
+        //getActivity().onContentChanged();
+    }
+
+    private void loadBluetoothDevices() {
+        // Get paired devices and populate preference list
+        ListPreference listBtDevices = (ListPreference) findPreference(getString(R.string.key_list_bluetooth_device));
+        BluetoothAdapter bta = BluetoothAdapter.getDefaultAdapter();
+        if (bta == null) {
+            // The device do not support Bluetooth
+            listBtDevices.setEnabled(false);
+        }
+        else {
+            Set<BluetoothDevice> pairedDevices = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
+            ArrayList<CharSequence> pairedDeviceStrings = new ArrayList<>();
+            ArrayList<CharSequence> pairedDevicesValues = new ArrayList<>();
+            if (!pairedDevices.isEmpty()) {
+                for (BluetoothDevice device : pairedDevices) {
+                    pairedDeviceStrings.add(device.getName() + "\n" + device.getAddress());
+                    pairedDevicesValues.add(device.getAddress());
+                }
+            }
+
+            // Set the values in the list
+            listBtDevices.setEnabled(true);
+            listBtDevices.setEntries(pairedDeviceStrings.toArray(new CharSequence[0]));
+            listBtDevices.setEntryValues(pairedDevicesValues.toArray(new CharSequence[0]));
+        }
+    }
+
+    /**
+     * Set the application version in the About preference ("x.y.z (build)")
+     */
+    private void setApplicationVersion() {
+        Preference pref = findPreference(getString(R.string.key_application_version));
+        String version = new String();
+        try {
+            String packageName = getActivity().getPackageName();
+            PackageInfo info = getActivity().getPackageManager().getPackageInfo(packageName, 0);
+            version = info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            // Do nothing
+        }
+
+        pref.setSummary(String.format(getString(R.string.pref_about_summary), version));
+    }
+
+    private void setListPreferenceSummary(ListPreference pref, String value) {
+        final int index = pref.findIndexOfValue(value);
+        if (index >= 0) {
+            final String summary = (String) pref.getEntries()[index];
+            pref.setSummary(summary);
+        }
+    }
+}

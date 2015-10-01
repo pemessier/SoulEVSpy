@@ -1,0 +1,13 @@
+classpath
+.project
+.gradle
+.idea
+
+syntax: glob
+*.class
+*.apk
+*.dex
+*.ap_
+build/*
+app/build/*
+gradle/*

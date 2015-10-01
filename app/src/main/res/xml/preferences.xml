@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Units -->
+    <PreferenceCategory android:title="@string/title_pref_units">
+        <ListPreference
+            android:key="@string/key_list_units_distance"
+            android:title="@string/pref_distance"
+            android:dialogTitle="@string/pref_distance"
+            android:entries="@array/list_distance_entries"
+            android:entryValues="@array/list_distance_values"
+            android:defaultValue="@string/list_distance_value_km" />
+        <ListPreference
+            android:key="@string/key_list_units_energy_consumption"
+            android:title="@string/pref_energy_consumption"
+            android:dialogTitle="@string/pref_energy_consumption"
+            android:entries="@array/list_energy_consumption_entries"
+            android:entryValues="@array/list_energy_consumption_values"
+            android:defaultValue="@string/list_energy_consumption_value_kwh_100km" />
+        <ListPreference
+            android:key="@string/key_list_units_temperature"
+            android:title="@string/pref_temperature"
+            android:dialogTitle="@string/pref_temperature"
+            android:entries="@array/list_temperature_entries"
+            android:entryValues="@array/list_temperature_values"
+            android:defaultValue="@string/list_temperature_value_c" />
+    </PreferenceCategory>
+
+    <!-- Bluetooth -->
+    <PreferenceCategory android:title="@string/title_pref_bluetooth">
+        <ListPreference
+            android:key="@string/key_list_bluetooth_device"
+            android:title="@string/pref_bluetooth_device"
+            android:summary="@string/pref_bluetooth_device_summary"
+            android:dialogTitle="@string/pref_bluetooth_device" />
+    </PreferenceCategory>
+
+    <!-- About -->
+    <PreferenceCategory android:title="@string/title_pref_about">
+        <Preference
+            android:key="@string/key_application_version"
+            android:title="@string/pref_about"
+            android:summary="Version info" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Distance units -->
+    <string-array name="list_distance_entries">
+        <item>@string/list_distance_km</item>
+        <item>@string/list_distance_mi</item>
+    </string-array>
+
+    <string-array name="list_distance_values">
+        <item>@string/list_distance_value_km</item>
+        <item>@string/list_distance_value_mi</item>
+    </string-array>
+
+    <!-- Energy consumption -->
+    <string-array name="list_energy_consumption_entries">
+        <item>@string/list_energy_consumption_kwh_100km</item>
+        <item>@string/list_energy_consumption_km_kwh</item>
+        <item>@string/list_energy_consumption_kwh_100mi</item>
+        <item>@string/list_energy_consumption_mi_kwh</item>
+    </string-array>
+
+    <string-array name="list_energy_consumption_values">
+        <item>@string/list_energy_consumption_value_kwh_100km</item>
+        <item>@string/list_energy_consumption_value_km_kwh</item>
+        <item>@string/list_energy_consumption_value_kwh_100mi</item>
+        <item>@string/list_energy_consumption_value_mi_kwh</item>
+    </string-array>
+
+    <!-- Temperature units -->
+    <string-array name="list_temperature_entries">
+        <item>@string/list_temperature_c</item>
+        <item>@string/list_temperature_f</item>
+    </string-array>
+
+    <string-array name="list_temperature_values">
+        <item>@string/list_temperature_value_c</item>
+        <item>@string/list_temperature_value_f</item>
+    </string-array>
+</resources>

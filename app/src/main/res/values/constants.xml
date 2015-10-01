@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- preferences.xml keys -->
+    <string name="key_list_units_distance">list_distance</string>
+    <string name="key_list_units_energy_consumption">list_energy_consumption</string>
+    <string name="key_list_units_temperature">list_temperature</string>
+    <string name="key_list_bluetooth_device">list_bluetooth_device</string>
+    <string name="key_application_version">application_version</string>
+
+    <!-- arrays.xml values -->
+    <string name="list_distance_value_km">km</string>
+    <string name="list_distance_value_mi">mi</string>
+
+    <string name="list_energy_consumption_value_kwh_100km">kwh_100km</string>
+    <string name="list_energy_consumption_value_km_kwh">km_kwh</string>
+    <string name="list_energy_consumption_value_kwh_100mi">kwh_100mi</string>
+    <string name="list_energy_consumption_value_mi_kwh">mi_kwh</string>
+
+    <string name="list_temperature_value_c">c</string>
+    <string name="list_temperature_value_f">f</string>
+</resources>

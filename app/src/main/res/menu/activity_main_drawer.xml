@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single" android:id="@+id/nav_first_id">
+        <item android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_action_view_as_grid"
+            android:title="Dashboard" />
+    </group>
+
+    <group android:checkableBehavior="single" android:id="@+id/nav_id">
+        <item android:id="@+id/nav_battery"
+            android:icon="@drawable/ic_action_battery"
+            android:title="Battery" />
+    </group>
+
+    <group android:id="@+id/nav_last_id">
+        <item android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_action_settings"
+            android:title="Settings" />
+    </group>
+</menu>
