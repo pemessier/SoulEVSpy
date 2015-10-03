@@ -35,4 +35,7 @@
 
     <!-- Main Activity -->
     <string name="action_connect">Connect</string>
+
+    <!-- Error messages -->
+    <string name="error_bluetooth_not_available">Bluetooth is not available</string>
 </resources>

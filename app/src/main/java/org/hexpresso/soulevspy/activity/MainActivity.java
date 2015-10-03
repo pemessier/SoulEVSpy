@@ -14,21 +14,28 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import app.akexorcist.bluetotohspp.library.BluetoothSPP;
+import app.akexorcist.bluetotohspp.library.BluetoothState;
 
 import org.hexpresso.soulevspy.R;
 import org.hexpresso.soulevspy.fragment.BatteryFragment;
 import org.hexpresso.soulevspy.fragment.DashboardFragment;
+import org.hexpresso.soulevspy.util.ClientSharedPreferences;
 
 /**
  *
  */
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    BluetoothSPP bt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
          setContentView(R.layout.activity_main);
+
+        // Bluetooth SPP service
+        bt = new BluetoothSPP(this);
 
         // Action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -57,6 +64,17 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             selectItem(R.id.nav_dashboard);
         }
+
+        bt.setDeviceTarget(BluetoothState.DEVICE_OTHER);
+
+        //ClientSharedPreferences prefs = new ClientSharedPreferences(getApplicationContext());
+        //bt.connect(prefs.getBluetoothDeviceStringValue());
+
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        bt.stopService();
     }
 
     @Override
@@ -74,12 +92,8 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
-        // TODO : Check if bluetooth is set! if not, disable
-        BluetoothAdapter bta = BluetoothAdapter.getDefaultAdapter();
-        if(bta==null)
-        {
-            menu.getItem(0).setEnabled(false);
-        }
+        // Disable the Connect button if Bluetooth is not available
+        menu.getItem(0).setEnabled(bt.isBluetoothAvailable());
         return true;
     }
 
