@@ -1,149 +1,214 @@
 package org.hexpresso.soulevspy.activity;
 
-import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
+import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP;
-import app.akexorcist.bluetotohspp.library.BluetoothState;
+
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.interfaces.OnCheckedChangeListener;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SwitchDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.hexpresso.soulevspy.R;
 import org.hexpresso.soulevspy.fragment.BatteryFragment;
 import org.hexpresso.soulevspy.fragment.DashboardFragment;
+import org.hexpresso.soulevspy.io.OBD2Device;
 import org.hexpresso.soulevspy.util.ClientSharedPreferences;
 
 /**
  *
  */
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerItemClickListener {
 
-    BluetoothSPP bt;
+    // Navigation Drawer items constants
+    private enum NavigationDrawerItem {
+        Invalid,
+        Bluetooth,
+        Dashboard,
+        Battery,
+        DtcCodes,
+        Settings,
+        HelpFeedback
+    }
 
+    OBD2Device mDevice;
+    ClientSharedPreferences mSharedPreferences;
+    private Drawer mDrawer;
+
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
          setContentView(R.layout.activity_main);
 
-        // Bluetooth SPP service
-        bt = new BluetoothSPP(this);
+        // Preferences
+        mSharedPreferences = new ClientSharedPreferences(this);
+
+        // Bluetooth OBD2 Device
+        mDevice = new OBD2Device(mSharedPreferences);
 
         // Action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        */
+        //ClientSharedPreferences prefs = new ClientSharedPreferences(getApplicationContext());
 
         // Navigation Drawer
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        mDrawer = new DrawerBuilder(this)
+                //this layout have to contain child layouts
+                .withRootView(R.id.drawer_container)
+                .withHeader(R.layout.nav_header)
+                .withToolbar(toolbar)
+                .withActionBarDrawerToggleAnimated(true)
+                .addDrawerItems(
+                        new SwitchDrawerItem().withIdentifier(NavigationDrawerItem.Bluetooth.ordinal()).withName(R.string.action_bluetooth).withIcon(GoogleMaterial.Icon.gmd_bluetooth).withChecked(false).withSelectable(false).withOnCheckedChangeListener(mOnCheckedBluetoothDevice),
+                        new DividerDrawerItem(),
+                        new PrimaryDrawerItem().withIdentifier(NavigationDrawerItem.Dashboard.ordinal()).withName(R.string.action_dashboard).withIcon(FontAwesome.Icon.faw_dashboard).withEnabled(false),
+                        new PrimaryDrawerItem().withIdentifier(NavigationDrawerItem.Battery.ordinal()).withName(R.string.action_battery).withIcon(FontAwesome.Icon.faw_battery_three_quarters),
+                        new PrimaryDrawerItem().withIdentifier(NavigationDrawerItem.DtcCodes.ordinal()).withName(R.string.action_dtc).withIcon(FontAwesome.Icon.faw_stethoscope).withEnabled(false),
+                        new DividerDrawerItem(),
+                        new SecondaryDrawerItem().withIdentifier(NavigationDrawerItem.Settings.ordinal()).withName(R.string.action_settings).withSelectable(false).withIcon(GoogleMaterial.Icon.gmd_settings),
+                        new SecondaryDrawerItem().withIdentifier(NavigationDrawerItem.HelpFeedback.ordinal()).withName(R.string.action_help).withIcon(GoogleMaterial.Icon.gmd_help).withEnabled(false)
+                )
+                .withOnDrawerItemClickListener(this)
+                .withSavedInstance(savedInstanceState)
+                .withShowDrawerOnFirstLaunch(true)
+                .build();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
+        //only set the active selection or active profile if we do not recreate the activity
         if (savedInstanceState == null) {
-            selectItem(R.id.nav_dashboard);
+            // set the selection to the item with the identifier 2
+            mDrawer.setSelection(NavigationDrawerItem.Battery.ordinal(), false);
+        }
+    }
+
+    /**
+     *
+     */
+    private OnCheckedChangeListener mOnCheckedBluetoothDevice = new OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(IDrawerItem drawerItem, CompoundButton buttonView, boolean isChecked) {
+            if( !bluetoothDeviceConnect(isChecked) )
+            {
+                buttonView.setChecked(false);
+            }
+        }
+    };
+
+    /**
+     *
+     * @param view
+     * @param position
+     * @param drawerItem
+     * @return
+     */
+    @Override
+    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+        //check if the drawerItem is set.
+        //there are different reasons for the drawerItem to be null
+        //--> click on the header
+        //--> click on the footer
+        //those items don't contain a drawerItem
+
+        if (drawerItem != null) {
+            Intent intent = null;
+            Fragment fragment = null;
+            try {
+                NavigationDrawerItem item = NavigationDrawerItem.values()[drawerItem.getIdentifier()];
+                switch (item) {
+                    case Bluetooth:
+                        // Do nothing
+                        break;
+                    case Dashboard:
+                        fragment = new DashboardFragment();
+                        break;
+                    case Battery:
+                        fragment = new BatteryFragment();
+                        break;
+                    case Settings:
+                        intent = new Intent(MainActivity.this, SettingsActivity.class);
+                        break;
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                // Do nothing
+            }
+
+            if (intent != null) {
+                MainActivity.this.startActivity(intent);
+            }
+
+            if (fragment != null) {
+                // Insert the fragment by replacing any existing fragment
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
+            }
         }
 
-        bt.setDeviceTarget(BluetoothState.DEVICE_OTHER);
-
-        //ClientSharedPreferences prefs = new ClientSharedPreferences(getApplicationContext());
-        //bt.connect(prefs.getBluetoothDeviceStringValue());
-
+        return false;
     }
 
+    /**
+     *
+     * @param connect
+     * @return
+     */
+    private boolean bluetoothDeviceConnect(boolean connect){
+        boolean success = false;
+        if (connect) {
+            success = mDevice.connect();
+        }
+        else {
+            //success = mDevice.stopService();
+        }
+
+        return success;
+    }
+
+    /**
+     *
+     */
     public void onDestroy() {
         super.onDestroy();
-        bt.stopService();
+        bluetoothDeviceConnect(false);
     }
 
+    /**
+     *
+     * @param outState
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //add the values which need to be saved from the drawer to the bundle
+        outState = mDrawer.saveInstanceState(outState);
+        super.onSaveInstanceState(outState);
+    }
+
+    /**
+     *
+     */
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        //handle the back press :D close the drawer first and if the drawer is closed close the activity
+        if (mDrawer != null && mDrawer.isDrawerOpen()) {
+            mDrawer.closeDrawer();
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-
-        // Disable the Connect button if Bluetooth is not available
-        menu.getItem(0).setEnabled(bt.isBluetoothAvailable());
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch(id) {
-            case R.id.action_connect:
-                Toast.makeText(getApplicationContext(), "Connect", Toast.LENGTH_LONG).show();
-                break;
-            default:
-                break;
-        }
-
-        return true;
-    }
-
-    private void selectItem(int position) {
-        // Handle navigation view item click
-        Fragment fragment = null;
-
-        switch(position) {
-            case R.id.nav_dashboard:
-                fragment = new DashboardFragment();
-                break;
-            case R.id.nav_battery:
-                fragment = new BatteryFragment();
-                break;
-            case R.id.nav_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
-            default:
-                break;
-        }
-
-        if( fragment != null ) {
-            // Insert the fragment by replacing any existing fragment
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-        }
-
-        // Close the drawer after the selection
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int position = item.getItemId();
-        selectItem(position);
-        return true;
     }
 }

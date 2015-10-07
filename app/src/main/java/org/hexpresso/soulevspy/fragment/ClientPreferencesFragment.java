@@ -21,13 +21,13 @@ import java.util.Set;
  */
 public class ClientPreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private ClientSharedPreferences preferences;
+    ClientSharedPreferences mSharedPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        preferences = new ClientSharedPreferences(getActivity());
+        mSharedPreferences = new ClientSharedPreferences(getActivity());
 
         // Set the shared preferences name
         getPreferenceManager().setSharedPreferencesName(ClientSharedPreferences.SHARED_PREFERENCES_NAME);
@@ -61,19 +61,19 @@ public class ClientPreferencesFragment extends PreferenceFragment implements Sha
         // Updating all preferences summary...
 
         ListPreference listPref = (ListPreference) findPreference(getString(R.string.key_list_units_distance));
-        setListPreferenceSummary( listPref, preferences.getUnitsDistanceStringValue() );
+        setListPreferenceSummary(listPref, mSharedPreferences.getUnitsDistanceStringValue());
 
         listPref = (ListPreference) findPreference(getString(R.string.key_list_units_energy_consumption));
-        setListPreferenceSummary(listPref, preferences.getUnitsEnergyConsumptionStringValue());
+        setListPreferenceSummary(listPref, mSharedPreferences.getUnitsEnergyConsumptionStringValue());
 
         listPref = (ListPreference) findPreference(getString(R.string.key_list_units_temperature));
-        setListPreferenceSummary( listPref, preferences.getUnitsTemperatureStringValue() );
+        setListPreferenceSummary(listPref, mSharedPreferences.getUnitsTemperatureStringValue());
 
         listPref = (ListPreference) findPreference(getString(R.string.key_list_bluetooth_device));
         String btSummary = getString(R.string.pref_bluetooth_device_summary);
-        String btAddress = preferences.getBluetoothDeviceStringValue();
+        String btAddress = mSharedPreferences.getBluetoothDeviceStringValue();
         BluetoothAdapter bta = BluetoothAdapter.getDefaultAdapter();
-        if ((btAddress != preferences.DEFAULT_BLUETOOTH_DEVICE) && (bta != null))
+        if ((btAddress != mSharedPreferences.DEFAULT_BLUETOOTH_DEVICE) && (bta != null))
         {
             // Set the bluetooth adapter name as summary
             try {

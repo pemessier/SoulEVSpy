@@ -52,4 +52,9 @@ dependencies {
     compile 'com.android.support:support-v4:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile project(':Android-BluetoothSPPLibrary-1.0-release')
+    compile('com.mikepenz:materialdrawer:4.3.1@aar') {
+        transitive = true
+    }
+    compile 'com.mikepenz:google-material-typeface:1.2.0.1@aar'
+    compile 'com.mikepenz:fontawesome-typeface:4.4.0.1@aar'
 }

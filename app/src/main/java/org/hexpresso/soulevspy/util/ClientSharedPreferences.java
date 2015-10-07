@@ -25,7 +25,8 @@ public class ClientSharedPreferences {
     public final String DEFAULT_UNITS_TEMPERATURE;
     public final String DEFAULT_BLUETOOTH_DEVICE;
 
-    private SharedPreferences sharedPreferences;
+    final private Context mContext;
+    final private SharedPreferences sharedPreferences;
 
     public ClientSharedPreferences(Context context) {
         // Load preference keys from XML
@@ -41,6 +42,7 @@ public class ClientSharedPreferences {
         DEFAULT_BLUETOOTH_DEVICE = "";
 
         // Create the SharedPreferences object
+        mContext = context;
         sharedPreferences = context.getSharedPreferences( SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE );
     }
 
@@ -58,5 +60,9 @@ public class ClientSharedPreferences {
 
     public String getBluetoothDeviceStringValue() {
         return sharedPreferences.getString(PREF_BLUETOOTH_DEVICE, DEFAULT_BLUETOOTH_DEVICE);
+    }
+
+    public Context getContext() {
+        return mContext;
     }
 }
