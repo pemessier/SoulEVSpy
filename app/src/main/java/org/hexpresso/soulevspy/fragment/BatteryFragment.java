@@ -14,6 +14,13 @@ import org.hexpresso.soulevspy.R;
 public class BatteryFragment extends Fragment {
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        getActivity().setTitle(R.string.action_battery);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_battery, container, false);
     }

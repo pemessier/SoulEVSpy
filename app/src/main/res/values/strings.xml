@@ -3,6 +3,7 @@
 
     <!-- Navigation Drawer -->
     <string name="action_bluetooth">Bluetooth Device</string>
+    <string name="action_car_information">Car Information</string>
     <string name="action_dashboard">Dashboard</string>
     <string name="action_dtc">DTC Codes</string>
     <string name="action_battery">Battery</string>
@@ -36,9 +37,22 @@
     <string name="pref_about_summary">Version %1$s</string>
 
     <!-- Main Activity -->
-    <string name="action_connect">Connect</string>
 
     <!-- Error messages -->
     <string name="error_bluetooth_not_available">Bluetooth is not available</string>
     <string name="error_no_bluetooth_device">No Bluetooth device selected</string>
+    <string name="error_bluetooth_service_not_available">Bluetooth service is not available</string>
+
+    <!-- Car Information (VIN decoding) -->
+    <string name="car_kia">Kia</string>
+    <string name="car_soulev">Soul EV</string>
+    <string name="car_engine_e">Battery [LiPB 350 V, 75 Ah] + Motor [3-phase AC 80KW]</string>
+    <string name="car_trim_base">Base</string>
+    <string name="car_trim_plus">Plus/Luxury</string>
+    <string name="car_unknown">Unknown</string>
+    <string name="car_plant_hwaseong">Hwaseong</string>
+    <string name="car_plant_soha_ri">Soha-ri</string>
+    <string name="car_plant_gwangju">Gwangju</string>
+    <string name="car_plant_seosan">Seosan</string>
+    <string name="car_south_korea">South Korea</string>
 </resources>

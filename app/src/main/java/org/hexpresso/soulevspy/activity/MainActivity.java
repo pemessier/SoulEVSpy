@@ -24,6 +24,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.hexpresso.soulevspy.R;
 import org.hexpresso.soulevspy.fragment.BatteryFragment;
+import org.hexpresso.soulevspy.fragment.CarFragment;
 import org.hexpresso.soulevspy.fragment.DashboardFragment;
 import org.hexpresso.soulevspy.io.OBD2Device;
 import org.hexpresso.soulevspy.util.ClientSharedPreferences;
@@ -37,15 +38,15 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
     private enum NavigationDrawerItem {
         Invalid,
         Bluetooth,
+        Car,
         Dashboard,
         Battery,
         DtcCodes,
         Settings,
         HelpFeedback
     }
-
-    OBD2Device mDevice;
-    ClientSharedPreferences mSharedPreferences;
+    private OBD2Device mDevice;
+    private ClientSharedPreferences mSharedPreferences;
     private Drawer mDrawer;
 
     /**
@@ -71,14 +72,14 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
 
         // Navigation Drawer
         mDrawer = new DrawerBuilder(this)
-                //this layout have to contain child layouts
-                .withRootView(R.id.drawer_container)
-                .withHeader(R.layout.nav_header)
+                .withActivity(this)
                 .withToolbar(toolbar)
-                .withActionBarDrawerToggleAnimated(true)
+                .withHasStableIds(true)
+                .withHeader(R.layout.nav_header)
                 .addDrawerItems(
                         new SwitchDrawerItem().withIdentifier(NavigationDrawerItem.Bluetooth.ordinal()).withName(R.string.action_bluetooth).withIcon(GoogleMaterial.Icon.gmd_bluetooth).withChecked(false).withSelectable(false).withOnCheckedChangeListener(mOnCheckedBluetoothDevice),
                         new DividerDrawerItem(),
+                        new PrimaryDrawerItem().withIdentifier(NavigationDrawerItem.Car.ordinal()).withName(R.string.action_car_information).withIcon(FontAwesome.Icon.faw_car),
                         new PrimaryDrawerItem().withIdentifier(NavigationDrawerItem.Dashboard.ordinal()).withName(R.string.action_dashboard).withIcon(FontAwesome.Icon.faw_dashboard).withEnabled(false),
                         new PrimaryDrawerItem().withIdentifier(NavigationDrawerItem.Battery.ordinal()).withName(R.string.action_battery).withIcon(FontAwesome.Icon.faw_battery_three_quarters),
                         new PrimaryDrawerItem().withIdentifier(NavigationDrawerItem.DtcCodes.ordinal()).withName(R.string.action_dtc).withIcon(FontAwesome.Icon.faw_stethoscope).withEnabled(false),
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
         //only set the active selection or active profile if we do not recreate the activity
         if (savedInstanceState == null) {
             // set the selection to the item with the identifier 2
-            mDrawer.setSelection(NavigationDrawerItem.Battery.ordinal(), false);
+            mDrawer.setSelection(NavigationDrawerItem.Battery.ordinal(), true);
         }
     }
 
@@ -135,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
                     case Bluetooth:
                         // Do nothing
                         break;
+                    case Car:
+                        fragment = new CarFragment();
+                        break;
                     case Dashboard:
                         fragment = new DashboardFragment();
                         break;
@@ -174,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
             success = mDevice.connect();
         }
         else {
-            //success = mDevice.stopService();
+            success = mDevice.disconnect();
         }
 
         return success;
@@ -210,5 +214,15 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
         } else {
             super.onBackPressed();
         }
+    }
+
+    /**
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mDevice.onActivityResult(requestCode, resultCode, data);
     }
 }

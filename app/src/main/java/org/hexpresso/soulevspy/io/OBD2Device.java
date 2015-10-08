@@ -2,6 +2,8 @@ package org.hexpresso.soulevspy.io;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.hexpresso.soulevspy.R;
@@ -13,7 +15,7 @@ import app.akexorcist.bluetotohspp.library.BluetoothState;
 /**
  * Created by pemessier on 2015-10-03.
  */
-public class OBD2Device {
+public class OBD2Device implements BluetoothSPP.OnDataReceivedListener {
     final BluetoothSPP mBluetoothDevice;
     final boolean      mIsBluetoothAvailable;
 
@@ -29,6 +31,8 @@ public class OBD2Device {
         mBluetoothDevice = new BluetoothSPP(mSharedPreferences.getContext());
         mIsBluetoothAvailable = mBluetoothDevice.isBluetoothAvailable();
 
+        // Start Bluetooth service
+        mBluetoothDevice.setOnDataReceivedListener(this);
         mBluetoothDevice.setDeviceTarget(BluetoothState.DEVICE_OTHER);
     }
 
@@ -38,14 +42,6 @@ public class OBD2Device {
      */
     public boolean isBluetoothAvailable() {
         return mIsBluetoothAvailable;
-    }
-
-    public void startSetvice() {
-        mBluetoothDevice.startService(false);
-    }
-
-    public void stopService() {
-        mBluetoothDevice.stopService();
     }
 
     public boolean connect() {
@@ -58,9 +54,16 @@ public class OBD2Device {
             if ((btAddress != mSharedPreferences.DEFAULT_BLUETOOTH_DEVICE) && (bta != null)) {
                 // Set the bluetooth adapter name as summary
                 try {
-                    BluetoothDevice device = bta.getRemoteDevice(btAddress);
-                    mBluetoothDevice.connect(btAddress);
-                    isDeviceValid = true;
+                    if( mBluetoothDevice.isServiceAvailable() )
+                    {
+                        mBluetoothDevice.connect(btAddress);
+                        isDeviceValid = true;
+                    }
+                    else
+                    {
+                        Toast.makeText(mSharedPreferences.getContext(), R.string.error_bluetooth_service_not_available, Toast.LENGTH_LONG).show();
+                        isDeviceValid = false;
+                    }
                 } catch (IllegalArgumentException e) {
                     isDeviceValid = false;
                 }
@@ -73,7 +76,30 @@ public class OBD2Device {
             Toast.makeText(mSharedPreferences.getContext(), R.string.error_bluetooth_not_available, Toast.LENGTH_LONG).show();
         }
 
+        if(!isDeviceValid)
+        {
+            disconnect();
+        }
+
         return isDeviceValid;
     }
 
+    public boolean disconnect() {
+        mBluetoothDevice.disconnect();
+
+        return true;
+    }
+
+    public void stopService() {
+        mBluetoothDevice.stopService();
+    }
+
+    public void onDataReceived(byte[] data, String message) {
+        Log.i("Check", "Length : " + data.length);
+        Log.i("Check", "Message : " + message);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("SoulEVSpy", String.format("onActivityResult: %d, %d", requestCode, resultCode));
+    }
 }
