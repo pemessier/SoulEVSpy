@@ -5,6 +5,7 @@
     <string name="key_list_units_energy_consumption">list_energy_consumption</string>
     <string name="key_list_units_temperature">list_temperature</string>
     <string name="key_list_bluetooth_device">list_bluetooth_device</string>
+    <string name="key_open_source_licenses">key_open_source_licenses</string>
     <string name="key_application_version">application_version</string>
 
     <!-- arrays.xml values -->

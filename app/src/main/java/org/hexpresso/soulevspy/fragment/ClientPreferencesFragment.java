@@ -2,6 +2,7 @@ package org.hexpresso.soulevspy.fragment;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -9,6 +10,10 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.webkit.WebView;
 
 import org.hexpresso.soulevspy.R;
 import org.hexpresso.soulevspy.util.ClientSharedPreferences;
@@ -21,7 +26,7 @@ import java.util.Set;
  */
 public class ClientPreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    ClientSharedPreferences mSharedPreferences;
+    private ClientSharedPreferences mSharedPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,17 @@ public class ClientPreferencesFragment extends PreferenceFragment implements Sha
         super.onResume();
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         //onSharedPreferenceChanged(null, "");
+    }
+
+    @Override
+    public boolean onPreferenceTreeClick (PreferenceScreen preferenceScreen, Preference preference) {
+        if (preference.getKey().equals(getString(R.string.key_open_source_licenses)))
+        {
+            displayOpenSourceLicensesDialog();
+            return true;
+        }
+
+        return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
     @Override
@@ -138,5 +154,20 @@ public class ClientPreferencesFragment extends PreferenceFragment implements Sha
             final String summary = (String) pref.getEntries()[index];
             pref.setSummary(summary);
         }
+    }
+
+    private void displayOpenSourceLicensesDialog() {
+        Context c = getActivity();
+
+        // Prepare the view
+        WebView view = (WebView) LayoutInflater.from(c).inflate(R.layout.dialog_licenses, null);
+        view.loadUrl("file:///android_asset/open_source_licenses.html");
+
+        // Show the dialog
+        AlertDialog.Builder ab = new AlertDialog.Builder(c, R.style.Theme_AppCompat_Light_Dialog_Alert);
+        ab.setTitle(R.string.pref_licenses);
+        ab.setView(view)
+        .setPositiveButton(android.R.string.ok, null)
+        .show();
     }
 }

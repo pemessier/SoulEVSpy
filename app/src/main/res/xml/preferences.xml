@@ -38,6 +38,10 @@
     <!-- About -->
     <PreferenceCategory android:title="@string/title_pref_about">
         <Preference
+            android:key="@string/key_open_source_licenses"
+            android:title="@string/pref_licenses"
+            android:summary="@string/pref_licenses_summary" />
+        <Preference
             android:key="@string/key_application_version"
             android:title="@string/pref_about"
             android:summary="Version info" />
