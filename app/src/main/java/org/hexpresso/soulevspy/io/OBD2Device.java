@@ -15,7 +15,9 @@ import app.akexorcist.bluetotohspp.library.BluetoothState;
 /**
  * Created by pemessier on 2015-10-03.
  */
-public class OBD2Device implements BluetoothSPP.OnDataReceivedListener {
+public class OBD2Device implements BluetoothSPP.OnDataReceivedListener,
+                                   BluetoothSPP.BluetoothConnectionListener,
+                                   BluetoothSPP.BluetoothStateListener {
     final BluetoothSPP mBluetoothDevice;
     final boolean      mIsBluetoothAvailable;
 
@@ -32,8 +34,13 @@ public class OBD2Device implements BluetoothSPP.OnDataReceivedListener {
         mIsBluetoothAvailable = mBluetoothDevice.isBluetoothAvailable();
 
         // Start Bluetooth service
-        mBluetoothDevice.setOnDataReceivedListener(this);
-        mBluetoothDevice.setDeviceTarget(BluetoothState.DEVICE_OTHER);
+        if (mIsBluetoothAvailable) {
+            mBluetoothDevice.setOnDataReceivedListener(this);
+            mBluetoothDevice.setBluetoothConnectionListener(this);
+            mBluetoothDevice.setBluetoothStateListener(this);
+            mBluetoothDevice.setupService();
+            mBluetoothDevice.setDeviceTarget(BluetoothState.DEVICE_OTHER);
+        }
     }
 
     /**
@@ -50,6 +57,8 @@ public class OBD2Device implements BluetoothSPP.OnDataReceivedListener {
         if ( isDeviceValid ) {
             String btAddress = mSharedPreferences.getBluetoothDeviceStringValue();
             BluetoothAdapter bta = BluetoothAdapter.getDefaultAdapter();
+
+            Log.d("SOULEV", "Trying to connect to ELM327 device : " + btAddress);
 
             if ((btAddress != mSharedPreferences.DEFAULT_BLUETOOTH_DEVICE) && (bta != null)) {
                 // Set the bluetooth adapter name as summary
@@ -86,7 +95,6 @@ public class OBD2Device implements BluetoothSPP.OnDataReceivedListener {
 
     public boolean disconnect() {
         mBluetoothDevice.disconnect();
-
         return true;
     }
 
@@ -94,9 +102,39 @@ public class OBD2Device implements BluetoothSPP.OnDataReceivedListener {
         mBluetoothDevice.stopService();
     }
 
+    public void sendData(String data) {
+        mBluetoothDevice.send(data, true);
+    }
+
     public void onDataReceived(byte[] data, String message) {
         Log.i("Check", "Length : " + data.length);
         Log.i("Check", "Message : " + message);
+    }
+
+    public void onDeviceConnected(String name, String address) {
+        // Do something when successfully connected
+    }
+
+    public void onDeviceDisconnected() {
+        // Do something when connection was disconnected
+    }
+
+    public void onDeviceConnectionFailed() {
+        // Do something when connection failed
+    }
+
+    public void onServiceStateChanged(int state) {
+        if(state == BluetoothState.STATE_CONNECTED) {
+            // Do something when successfully connected
+        }
+        else if(state == BluetoothState.STATE_CONNECTING){
+            // Do something while connecting
+        }
+        else if(state == BluetoothState.STATE_LISTEN) {
+            // Do something when device is waiting for connection
+        } else if(state == BluetoothState.STATE_NONE) {
+            // Do something when device don't have any connection
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
