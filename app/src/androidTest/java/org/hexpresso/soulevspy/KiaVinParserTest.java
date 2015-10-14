@@ -22,6 +22,7 @@ public class KiaVinParserTest extends AndroidTestCase {
     private final static String VIN_2016_LUXURY_TITANIUM = "KNDJX3AEXG7123456"; // Our car
     private final static String VIN_2016_LUXURY_WHITE    = "KNDJX3AE1G7123456"; // EEKO, 2016 luxury white
     private final static String VIN_2017_FAKE            = "KNDJX3AE0H0123456"; // Fake 2017
+    private final static String VIN_2016_TYREL           = "KNDJX3AE2G7006329";
 
     // AVT
     private final static String VIN_2015_AVT_1908        = "KNDJX3AE6F7001908"; // AVT VIN 1908
@@ -59,6 +60,7 @@ public class KiaVinParserTest extends AndroidTestCase {
         Assert.assertTrue(new KiaVinParser(getContext(), VIN_2015_3819).isValid());
         Assert.assertTrue(new KiaVinParser(getContext(), VIN_2015_3798).isValid());
         Assert.assertTrue(new KiaVinParser(getContext(), VIN_2015_3644).isValid());
+        Assert.assertTrue(new KiaVinParser(getContext(), VIN_2016_TYREL).isValid());
     }
 
     /**

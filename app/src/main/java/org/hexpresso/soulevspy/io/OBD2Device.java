@@ -1,7 +1,7 @@
 package org.hexpresso.soulevspy.io;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
@@ -22,6 +22,7 @@ public class OBD2Device implements BluetoothSPP.OnDataReceivedListener,
     final boolean      mIsBluetoothAvailable;
 
     final ClientSharedPreferences mSharedPreferences;
+    final Context mContext;
 
     /**
      * Constructor
@@ -29,8 +30,9 @@ public class OBD2Device implements BluetoothSPP.OnDataReceivedListener,
      */
     public OBD2Device(ClientSharedPreferences sharedPreferences) {
         mSharedPreferences = sharedPreferences;
+        mContext = sharedPreferences.getContext();
 
-        mBluetoothDevice = new BluetoothSPP(mSharedPreferences.getContext());
+        mBluetoothDevice = new BluetoothSPP(mContext);
         mIsBluetoothAvailable = mBluetoothDevice.isBluetoothAvailable();
 
         // Start Bluetooth service
@@ -70,7 +72,7 @@ public class OBD2Device implements BluetoothSPP.OnDataReceivedListener,
                     }
                     else
                     {
-                        Toast.makeText(mSharedPreferences.getContext(), R.string.error_bluetooth_service_not_available, Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, R.string.error_bluetooth_service_not_available, Toast.LENGTH_LONG).show();
                         isDeviceValid = false;
                     }
                 } catch (IllegalArgumentException e) {
@@ -78,11 +80,11 @@ public class OBD2Device implements BluetoothSPP.OnDataReceivedListener,
                 }
             }
             else {
-                Toast.makeText(mSharedPreferences.getContext(), R.string.error_no_bluetooth_device, Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, R.string.error_no_bluetooth_device, Toast.LENGTH_LONG).show();
                 isDeviceValid = false;
             }
         } else {
-            Toast.makeText(mSharedPreferences.getContext(), R.string.error_bluetooth_not_available, Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, R.string.error_bluetooth_not_available, Toast.LENGTH_LONG).show();
         }
 
         if(!isDeviceValid)
@@ -113,28 +115,39 @@ public class OBD2Device implements BluetoothSPP.OnDataReceivedListener,
 
     public void onDeviceConnected(String name, String address) {
         // Do something when successfully connected
+        Toast.makeText(mContext, "Connected to " + name + " (" + address + ")", Toast.LENGTH_SHORT);
     }
 
     public void onDeviceDisconnected() {
         // Do something when connection was disconnected
+        Toast.makeText(mContext, "Disconnected", Toast.LENGTH_SHORT);
     }
 
     public void onDeviceConnectionFailed() {
         // Do something when connection failed
+        Toast.makeText(mContext, "Connection failed", Toast.LENGTH_SHORT);
     }
 
     public void onServiceStateChanged(int state) {
+        String message = null;
         if(state == BluetoothState.STATE_CONNECTED) {
             // Do something when successfully connected
+            message = new String("STATE_CONNECTED");
         }
         else if(state == BluetoothState.STATE_CONNECTING){
             // Do something while connecting
+            message = new String("STATE_CONNECTING");
         }
         else if(state == BluetoothState.STATE_LISTEN) {
             // Do something when device is waiting for connection
-        } else if(state == BluetoothState.STATE_NONE) {
-            // Do something when device don't have any connection
+            message = new String("STATE_LISTEN");
         }
+        else if(state == BluetoothState.STATE_NONE) {
+            // Do something when device don't have any connection
+            message = new String("STATE_NONE");
+        }
+
+        Toast.makeText(mContext, message, Toast.LENGTH_SHORT);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
