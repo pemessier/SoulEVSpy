@@ -3,7 +3,7 @@ package org.hexpresso.obd;
 import java.util.ArrayList;
 
 /**
- * Created by pemessier on 2015-10-12.
+ * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-12.
  */
 public class ObdMessageData {
     private ArrayList<String>  mData              = null;

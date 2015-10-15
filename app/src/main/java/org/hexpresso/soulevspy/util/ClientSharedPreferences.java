@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import org.hexpresso.soulevspy.R;
 
 /**
- * Created by pemessier on 2015-09-28.
+ * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-09-28.
  */
 public class ClientSharedPreferences {
 

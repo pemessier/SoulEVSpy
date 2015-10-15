@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
- * Created by pemessier on 2015-10-13.
+ * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-13.
  */
 public class ClockMessageFilter extends ObdMessageFilter {
     GregorianCalendar mTime = null;

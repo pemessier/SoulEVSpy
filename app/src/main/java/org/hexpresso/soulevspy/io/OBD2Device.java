@@ -13,7 +13,7 @@ import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 
 /**
- * Created by pemessier on 2015-10-03.
+ * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-03.
  */
 public class OBD2Device implements BluetoothSPP.OnDataReceivedListener,
                                    BluetoothSPP.BluetoothConnectionListener,

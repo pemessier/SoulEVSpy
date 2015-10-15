@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by pemessier on 2015-10-07.
+ * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-07.
  */
 public class CarFragment extends ListFragment {
 

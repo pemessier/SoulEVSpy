@@ -1,7 +1,7 @@
 package org.hexpresso.soulevspy.io;
 
 /**
- * Created by pemessier on 2015-10-06.
+ * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-06.
  */
 public class ELM327Protocol {
 

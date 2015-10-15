@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import org.hexpresso.soulevspy.R;
 
 /**
- * Created by pemessier on 2015-10-02.
+ * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-02.
  */
 public class DashboardFragment extends Fragment {
 

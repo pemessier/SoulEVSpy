@@ -7,7 +7,7 @@ import junit.framework.Assert;
 import org.hexpresso.soulevspy.util.KiaVinParser;
 
 /**
- * Created by pemessier on 2015-10-07.
+ * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-07.
  */
 public class KiaVinParserTest extends AndroidTestCase {
 

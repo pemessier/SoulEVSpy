@@ -1,7 +1,7 @@
 package org.hexpresso.soulevspy.util;
 
 /**
- * Created by pemessier on 2015-10-05.
+ * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-05.
  */
 public class OBD2Parser {
     /*

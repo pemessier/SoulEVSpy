@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import org.hexpresso.soulevspy.R;
 
 /**
- * Created by pemessier on 2015-10-01.
+ * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-01.
  */
 public class BatteryFragment extends Fragment {
 

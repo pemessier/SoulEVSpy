@@ -6,7 +6,7 @@ import org.hexpresso.obd.ObdMessageFilter;
 import java.util.ArrayList;
 
 /**
- * Created by pemessier on 2015-10-13.
+ * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-13.
  */
 public class BatteryChargingMessageFilter extends ObdMessageFilter {
 

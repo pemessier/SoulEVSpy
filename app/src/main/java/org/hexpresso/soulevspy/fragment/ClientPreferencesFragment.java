@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 /**
- * Created by pemessier on 2015-09-28.
+ * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-09-28.
  */
 public class ClientPreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 

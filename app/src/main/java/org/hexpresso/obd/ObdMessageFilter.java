@@ -3,7 +3,7 @@ package org.hexpresso.obd;
 import java.util.ArrayList;
 
 /**
- * Created by pemessier on 2015-10-10.
+ * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-10.
  */
 public abstract class ObdMessageFilter {
 
