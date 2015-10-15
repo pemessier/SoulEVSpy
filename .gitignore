@@ -59,3 +59,6 @@ captures/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Local configuration file (sdk path, etc)
+local.properties
