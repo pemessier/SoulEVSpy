@@ -152,4 +152,13 @@ public class KiaVinParserTest extends AndroidTestCase {
         Assert.assertEquals(vin.getSequentialNumber(), "123456");
         Assert.assertEquals(vin.getProductionPlant(), "Unknown (0)");
     }
+
+    // TODO PEM : Add a parser for the 0902 message!
+    /*
+                // KNDJX3AE1G7123456
+                "0902\n" +
+                "7EA 10 14 49 02 01 4B 4E 44 \n" +
+                "7EA 21 4A 58 33 41 45 31 47 \n" +
+                "7EA 22 37 31 32 33 34 35 36 \n" +
+     */
 }
