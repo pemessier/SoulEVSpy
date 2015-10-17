@@ -183,72 +183,104 @@ public class BatteryManagementSystemParser {
 
         return true;
     }
-    /*
-        bmsData.batteryCellVoltage[32] = HexToInteger(line25.get(4)) * 0.02;
-        bmsData.batteryCellVoltage[33] = HexToInteger(line25.get(5)) * 0.02;
-        bmsData.batteryCellVoltage[34] = HexToInteger(line25.get(6)) * 0.02;
-        bmsData.batteryCellVoltage[35]
-        bmsData.batteryCellVoltage[36]
-        bmsData.batteryCellVoltage[37]
-        bmsData.batteryCellVoltage[38]
-        bmsData.batteryCellVoltage[39]
-        bmsData.batteryCellVoltage[40]
-        bmsData.batteryCellVoltage[41]
-        bmsData.batteryCellVoltage[42]
-        bmsData.batteryCellVoltage[43]
-        bmsData.batteryCellVoltage[44]
-        bmsData.batteryCellVoltage[45]
-        bmsData.batteryCellVoltage[46]
-        bmsData.batteryCellVoltage[47]
-        bmsData.batteryCellVoltage[48]
-        bmsData.batteryCellVoltage[49]
-        bmsData.batteryCellVoltage[50]
-        bmsData.batteryCellVoltage[51]
-        bmsData.batteryCellVoltage[52]
-        bmsData.batteryCellVoltage[53]
-        bmsData.batteryCellVoltage[54]
-        bmsData.batteryCellVoltage[55]
-        bmsData.batteryCellVoltage[56]
-        bmsData.batteryCellVoltage[57]
-        bmsData.batteryCellVoltage[58]
-        bmsData.batteryCellVoltage[59]
-        bmsData.batteryCellVoltage[60]
-        bmsData.batteryCellVoltage[61]
-        bmsData.batteryCellVoltage[62]
-        bmsData.batteryCellVoltage[63]
-        bmsData.batteryCellVoltage[64]
-        bmsData.batteryCellVoltage[65]
-        bmsData.batteryCellVoltage[66]
-        bmsData.batteryCellVoltage[67]
-        bmsData.batteryCellVoltage[68]
-        bmsData.batteryCellVoltage[69]
-        bmsData.batteryCellVoltage[70]
-        bmsData.batteryCellVoltage[71]
-        bmsData.batteryCellVoltage[72]
-        bmsData.batteryCellVoltage[73]
-        bmsData.batteryCellVoltage[74]
-        bmsData.batteryCellVoltage[75]
-        bmsData.batteryCellVoltage[76]
-        bmsData.batteryCellVoltage[77]
-        bmsData.batteryCellVoltage[78]
-        bmsData.batteryCellVoltage[79]
-        bmsData.batteryCellVoltage[80]
-        bmsData.batteryCellVoltage[81]
-        bmsData.batteryCellVoltage[82]
-        bmsData.batteryCellVoltage[83]
-        bmsData.batteryCellVoltage[84]
-        bmsData.batteryCellVoltage[85]
-        bmsData.batteryCellVoltage[86]
-        bmsData.batteryCellVoltage[87]
-        bmsData.batteryCellVoltage[88]
-        bmsData.batteryCellVoltage[89]
-        bmsData.batteryCellVoltage[90]
-        bmsData.batteryCellVoltage[91]
-        bmsData.batteryCellVoltage[92]
-        bmsData.batteryCellVoltage[93]
-        bmsData.batteryCellVoltage[94]
-        bmsData.batteryCellVoltage[95]
-     */
+
+    public boolean parseMessage2103(String rawData) {
+        ParsedRawData data = new ParsedRawData(rawData);
+        if (!data.isValid()) {
+            return false;
+        }
+
+        final ArrayList<String> line21 = data.getData("21");
+        final ArrayList<String> line22 = data.getData("22");
+        final ArrayList<String> line23 = data.getData("23");
+        final ArrayList<String> line24 = data.getData("24");
+        final ArrayList<String> line25 = data.getData("25");
+
+        // Battery Cell Voltage 33-64
+        bmsData.batteryCellVoltage[32] = HexToInteger(line21.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[33] = HexToInteger(line21.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[34] = HexToInteger(line21.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[35] = HexToInteger(line21.get(3)) * 0.02;
+        bmsData.batteryCellVoltage[36] = HexToInteger(line21.get(4)) * 0.02;
+        bmsData.batteryCellVoltage[37] = HexToInteger(line21.get(5)) * 0.02;
+        bmsData.batteryCellVoltage[38] = HexToInteger(line21.get(6)) * 0.02;
+        bmsData.batteryCellVoltage[39]  = HexToInteger(line22.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[40]  = HexToInteger(line22.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[41]  = HexToInteger(line22.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[42] = HexToInteger(line22.get(3)) * 0.02;
+        bmsData.batteryCellVoltage[43] = HexToInteger(line22.get(4)) * 0.02;
+        bmsData.batteryCellVoltage[44] = HexToInteger(line22.get(5)) * 0.02;
+        bmsData.batteryCellVoltage[45] = HexToInteger(line22.get(6)) * 0.02;
+        bmsData.batteryCellVoltage[46] = HexToInteger(line23.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[47] = HexToInteger(line23.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[48] = HexToInteger(line23.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[49] = HexToInteger(line23.get(3)) * 0.02;
+        bmsData.batteryCellVoltage[50] = HexToInteger(line23.get(4)) * 0.02;
+        bmsData.batteryCellVoltage[51] = HexToInteger(line23.get(5)) * 0.02;
+        bmsData.batteryCellVoltage[52] = HexToInteger(line23.get(6)) * 0.02;
+        bmsData.batteryCellVoltage[53] = HexToInteger(line24.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[54] = HexToInteger(line24.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[55] = HexToInteger(line24.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[56] = HexToInteger(line24.get(3)) * 0.02;
+        bmsData.batteryCellVoltage[57] = HexToInteger(line24.get(4)) * 0.02;
+        bmsData.batteryCellVoltage[58] = HexToInteger(line24.get(5)) * 0.02;
+        bmsData.batteryCellVoltage[59] = HexToInteger(line24.get(6)) * 0.02;
+        bmsData.batteryCellVoltage[60] = HexToInteger(line25.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[61] = HexToInteger(line25.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[62] = HexToInteger(line25.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[63] = HexToInteger(line25.get(3)) * 0.02;
+
+        return true;
+    }
+
+    public boolean parseMessage2104(String rawData) {
+        ParsedRawData data = new ParsedRawData(rawData);
+        if (!data.isValid()) {
+            return false;
+        }
+
+        final ArrayList<String> line21 = data.getData("21");
+        final ArrayList<String> line22 = data.getData("22");
+        final ArrayList<String> line23 = data.getData("23");
+        final ArrayList<String> line24 = data.getData("24");
+        final ArrayList<String> line25 = data.getData("25");
+
+        // Battery Cell Voltage 65-96
+        bmsData.batteryCellVoltage[64] = HexToInteger(line21.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[65] = HexToInteger(line21.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[66] = HexToInteger(line21.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[67] = HexToInteger(line21.get(3)) * 0.02;
+        bmsData.batteryCellVoltage[68] = HexToInteger(line21.get(4)) * 0.02;
+        bmsData.batteryCellVoltage[69] = HexToInteger(line21.get(5)) * 0.02;
+        bmsData.batteryCellVoltage[70] = HexToInteger(line21.get(6)) * 0.02;
+        bmsData.batteryCellVoltage[71]  = HexToInteger(line22.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[72]  = HexToInteger(line22.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[73]  = HexToInteger(line22.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[74] = HexToInteger(line22.get(3)) * 0.02;
+        bmsData.batteryCellVoltage[75] = HexToInteger(line22.get(4)) * 0.02;
+        bmsData.batteryCellVoltage[76] = HexToInteger(line22.get(5)) * 0.02;
+        bmsData.batteryCellVoltage[77] = HexToInteger(line22.get(6)) * 0.02;
+        bmsData.batteryCellVoltage[78] = HexToInteger(line23.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[79] = HexToInteger(line23.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[80] = HexToInteger(line23.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[81] = HexToInteger(line23.get(3)) * 0.02;
+        bmsData.batteryCellVoltage[82] = HexToInteger(line23.get(4)) * 0.02;
+        bmsData.batteryCellVoltage[83] = HexToInteger(line23.get(5)) * 0.02;
+        bmsData.batteryCellVoltage[84] = HexToInteger(line23.get(6)) * 0.02;
+        bmsData.batteryCellVoltage[85] = HexToInteger(line24.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[86] = HexToInteger(line24.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[87] = HexToInteger(line24.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[88] = HexToInteger(line24.get(3)) * 0.02;
+        bmsData.batteryCellVoltage[89] = HexToInteger(line24.get(4)) * 0.02;
+        bmsData.batteryCellVoltage[90] = HexToInteger(line24.get(5)) * 0.02;
+        bmsData.batteryCellVoltage[91] = HexToInteger(line24.get(6)) * 0.02;
+        bmsData.batteryCellVoltage[92] = HexToInteger(line25.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[93] = HexToInteger(line25.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[94] = HexToInteger(line25.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[95] = HexToInteger(line25.get(3)) * 0.02;
+
+        return true;
+    }
 
     private class ParsedRawData {
         private HashMap<String, ArrayList<String>> mMap = new HashMap<>();

@@ -78,35 +78,45 @@ public class ObdBmsTest extends AndroidTestCase {
     }
 
     public void test2103() {
-        final String msg2103 = new String();
+        final String msg2103 = new String("7EA 03 7F 21 12 \n" +
+                                          "7EC 10 26 61 03 FF FF FF FF \n" +
+                                          "7EC 21 AB AB AB AB AB AB AB \n" +
+                                          "7EC 22 AB AB AB AB AB AB AB \n" +
+                                          "7EC 23 AB AB AB AB AB AB AB \n" +
+                                          "7EC 24 AB AB AB AB AB AB AB \n" +
+                                          "7EC 25 AB AB AB AB 00 00 00 \n");
+
+        BatteryManagementSystemParser parser = new BatteryManagementSystemParser();
+        Assert.assertTrue(parser.parseMessage2103(msg2103));
+
+        BatteryManagementSystemParser.Data parsedData = parser.getParsedData();
+        for( int i = 33; i < 64; ++i ) {
+            Assert.assertEquals(3.42, parsedData.batteryCellVoltage[i]);
+        }
     }
 
     public void test2104() {
-        final String msg2104 = new String();
+        final String msg2104 = new String("7EA 03 7F 21 12 \n" +
+                                          "7EC 10 26 61 04 FF FF FF FF \n" +
+                                          "7EC 21 AB AB AB AB AB AB AB \n" +
+                                          "7EC 22 AB AB AB AB AB AB AB \n" +
+                                          "7EC 23 AB AB AB AB AB AB AB \n" +
+                                          "7EC 24 AB AB AB AB AB AB AB \n" +
+                                          "7EC 25 AB AB AB AB 00 00 00 \n");
+
+        BatteryManagementSystemParser parser = new BatteryManagementSystemParser();
+        Assert.assertTrue(parser.parseMessage2104(msg2104));
+
+        BatteryManagementSystemParser.Data parsedData = parser.getParsedData();
+        for( int i = 65; i < 96; ++i ) {
+            Assert.assertEquals(3.42, parsedData.batteryCellVoltage[i]);
+        }
     }
 
     public void test2105() {
         final String msg2105 = new String();
     }
 /*
-                ">2103\n" +
-                "7EA 03 7F 21 12 \n" +
-                "7EC 10 26 61 03 FF FF FF FF \n" +
-                "7EC 21 AB AB AB AB AB AB AB \n" +
-                "7EC 22 AB AB AB AB AB AB AB \n" +
-                "7EC 23 AB AB AB AB AB AB AB \n" +
-                "7EC 24 AB AB AB AB AB AB AB \n" +
-                "7EC 25 AB AB AB AB 00 00 00 \n" +
-                "\n" +
-                ">2104\n" +
-                "7EA 03 7F 21 12 \n" +
-                "7EC 10 26 61 04 FF FF FF FF \n" +
-                "7EC 21 AB AB AB AB AB AB AB \n" +
-                "7EC 22 AB AB AB AB AB AB AB \n" +
-                "7EC 23 AB AB AB AB AB AB AB \n" +
-                "7EC 24 AB AB AB AB AB AB AB \n" +
-                "7EC 25 AB AB AB AB 00 00 00 \n" +
-                "\n" +
                 ">2105\n" +
                 "7EA 03 7F 21 12 \n" +
                 "7EC 10 2C 61 05 FF FF FF FF \n" +
