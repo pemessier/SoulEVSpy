@@ -1,4 +1,4 @@
-package org.hexpresso.soulevspy;
+package org.hexpresso.soulevspy.util;
 
 import android.util.ArrayMap;
 
@@ -67,7 +67,7 @@ public class BatteryManagementSystemParser {
 
     Data bmsData = null;
 
-    Data getParsedData() {
+    public Data getParsedData() {
         return bmsData;
     }
 

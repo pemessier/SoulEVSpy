@@ -4,6 +4,8 @@ import android.test.AndroidTestCase;
 
 import junit.framework.Assert;
 
+import org.hexpresso.soulevspy.util.BatteryManagementSystemParser;
+
 /**
  * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-15.
  *
