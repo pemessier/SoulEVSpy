@@ -32,6 +32,9 @@ public class BatteryManagementSystemParser {
         public double accumulativeDischargePower; // kWh
         public int accumulativeOperatingTime; // Sec
 
+        //public double inverterCapacitorVoltage;
+        public int driveMotorSpeed;
+
         // Status BMS main relay	NO	-
         // Adjustable state BMS	NO	-
         // BMS Warning	NO	-
@@ -42,17 +45,10 @@ public class BatteryManagementSystemParser {
         // Battery input temperature	10	°C
         // Status BLOWER	0	-
         // Fan feedback frequency	0	Hz
-        // Cumulative charging voltage	4009,7	Ah
-        // Cumulative discharge	4097,5	Ah
-        // Cumulative charging current	1471,9	kWh
-        // Cumulative discharge	1465,8	kWh
-        // Cumulative operating time	1744263	Sec
         // MCU ready	YES	-
         // Request MCU main relay from	NO	-
         // Controllable MCU	NO	-
         // HCU ready	YES	-
-        // Capacitor Voltage Inverter	1?	V
-        // Drive Motor Speed	0	rpm
         // Insulation resistance	1000?	kOhm
 
         public double batteryCellVoltage[] = new double[96]; // V
@@ -135,11 +131,23 @@ public class BatteryManagementSystemParser {
                                               ( HexToInteger(line27.get(2) ) << 8) +
                                               ( HexToInteger(line27.get(3) ) ) );
 
+        bmsData.driveMotorSpeed = ( ( HexToInteger(line28.get(0) ) << 8) + HexToInteger(line28.get(1)) ); // Could be also 2-3
         return true;
     }
 
-    /*
-            // Battery Cell Voltage 01-96
+    public boolean parseMessage2102(String rawData) {
+        ParsedRawData data = new ParsedRawData(rawData);
+        if (!data.isValid()) {
+            return false;
+        }
+
+        final ArrayList<String> line21 = data.getData("21");
+        final ArrayList<String> line22 = data.getData("22");
+        final ArrayList<String> line23 = data.getData("23");
+        final ArrayList<String> line24 = data.getData("24");
+        final ArrayList<String> line25 = data.getData("25");
+
+        // Battery Cell Voltage 01-32
         bmsData.batteryCellVoltage[0] = HexToInteger(line21.get(0)) * 0.02;
         bmsData.batteryCellVoltage[1] = HexToInteger(line21.get(1)) * 0.02;
         bmsData.batteryCellVoltage[2] = HexToInteger(line21.get(2)) * 0.02;
@@ -172,6 +180,10 @@ public class BatteryManagementSystemParser {
         bmsData.batteryCellVoltage[29] = HexToInteger(line25.get(1)) * 0.02;
         bmsData.batteryCellVoltage[30] = HexToInteger(line25.get(2)) * 0.02;
         bmsData.batteryCellVoltage[31] = HexToInteger(line25.get(3)) * 0.02;
+
+        return true;
+    }
+    /*
         bmsData.batteryCellVoltage[32] = HexToInteger(line25.get(4)) * 0.02;
         bmsData.batteryCellVoltage[33] = HexToInteger(line25.get(5)) * 0.02;
         bmsData.batteryCellVoltage[34] = HexToInteger(line25.get(6)) * 0.02;

@@ -52,10 +52,29 @@ public class ObdBmsTest extends AndroidTestCase {
         Assert.assertEquals(657.9, parsedData.accumulativeChargePower, 1e-6);
         Assert.assertEquals(689.0, parsedData.accumulativeDischargePower, 1e-6);
         Assert.assertEquals(650390, parsedData.accumulativeOperatingTime);
+        Assert.assertEquals(0, parsedData.driveMotorSpeed);
     }
 
     public void test2102() {
-        final String msg2102 = new String();
+        final String msg2102 = new String("7EA 10 21 61 02 FF FF 80 00 \n" +
+                                          "7EC 10 26 61 02 FF FF FF FF \n" +
+                                          "7EA 21 83 A2 7D 7E 00 00 00 \n" +
+                                          "7EC 21 AB AB AB AB AB AB AB \n" +
+                                          "7EA 22 00 00 00 04 00 00 00 \n" +
+                                          "7EC 22 AB AB AB AB AB AB AB \n" +
+                                          "7EA 23 00 00 1C 00 22 21 21 \n" +
+                                          "7EC 23 AB AB AB AB AB AB AB \n" +
+                                          "7EA 24 FE 07 FF 07 AE 51 00 \n" +
+                                          "7EC 24 AB AB AB AB AB AB AB \n" +
+                                          "7EC 25 AB AB AB AB 00 00 00 \n");
+
+        BatteryManagementSystemParser parser = new BatteryManagementSystemParser();
+        Assert.assertTrue(parser.parseMessage2102(msg2102));
+
+        BatteryManagementSystemParser.Data parsedData = parser.getParsedData();
+        for( int i = 0; i < 32; ++i ) {
+            Assert.assertEquals(3.42, parsedData.batteryCellVoltage[i]);
+        }
     }
 
     public void test2103() {
@@ -70,20 +89,6 @@ public class ObdBmsTest extends AndroidTestCase {
         final String msg2105 = new String();
     }
 /*
-                "\n" +
-                ">2102\n" +
-                "7EA 10 21 61 02 FF FF 80 00 \n" +
-                "7EC 10 26 61 02 FF FF FF FF \n" +
-                "7EA 21 83 A2 7D 7E 00 00 00 \n" +
-                "7EC 21 AB AB AB AB AB AB AB \n" +
-                "7EA 22 00 00 00 04 00 00 00 \n" +
-                "7EC 22 AB AB AB AB AB AB AB \n" +
-                "7EA 23 00 00 1C 00 22 21 21 \n" +
-                "7EC 23 AB AB AB AB AB AB AB \n" +
-                "7EA 24 FE 07 FF 07 AE 51 00 \n" +
-                "7EC 24 AB AB AB AB AB AB AB \n" +
-                "7EC 25 AB AB AB AB 00 00 00 \n" +
-                "\n" +
                 ">2103\n" +
                 "7EA 03 7F 21 12 \n" +
                 "7EC 10 26 61 03 FF FF FF FF \n" +
