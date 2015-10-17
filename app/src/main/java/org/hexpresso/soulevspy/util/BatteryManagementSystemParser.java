@@ -282,6 +282,17 @@ public class BatteryManagementSystemParser {
         return true;
     }
 
+    public boolean parseMessage2105(String rawData) {
+        ParsedRawData data = new ParsedRawData(rawData);
+        if (!data.isValid()) {
+            return false;
+        }
+
+        // TODO
+
+        return true;
+    }
+
     private class ParsedRawData {
         private HashMap<String, ArrayList<String>> mMap = new HashMap<>();
 

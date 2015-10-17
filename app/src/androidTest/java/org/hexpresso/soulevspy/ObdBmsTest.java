@@ -114,23 +114,17 @@ public class ObdBmsTest extends AndroidTestCase {
     }
 
     public void test2105() {
-        final String msg2105 = new String();
+        final String msg2105 = new String("7EA 03 7F 21 12 \n" +
+                                          "7EC 10 2C 61 05 FF FF FF FF \n" +
+                                          "7EC 21 00 00 00 00 00 0D 0D \n" +
+                                          "7EC 22 0E 00 00 00 00 23 28 \n" +
+                                          "7EC 23 1E C8 00 01 50 0D 0C \n" +
+                                          "7EC 24 00 28 07 00 08 06 13 \n" +
+                                          "7EC 25 00 00 00 00 00 00 00 \n" +
+                                          "7EC 26 00 00 00 00 00 00 00 \n");
+
+        BatteryManagementSystemParser parser = new BatteryManagementSystemParser();
+        Assert.assertTrue(parser.parseMessage2105(msg2105));
+
     }
-/*
-                ">2105\n" +
-                "7EA 03 7F 21 12 \n" +
-                "7EC 10 2C 61 05 FF FF FF FF \n" +
-                "7EC 21 00 00 00 00 00 0D 0D \n" +
-                "7EC 22 0E 00 00 00 00 23 28 \n" +
-                "7EC 23 1E C8 00 01 50 0D 0C \n" +
-                "7EC 24 00 28 07 00 08 06 13 \n" +
-                "7EC 25 00 00 00 00 00 00 00 \n" +
-                "7EC 26 00 00 00 00 00 00 00 \n" +
-                "\n" +
-                ">2106\n" +
-                "7EA 03 7F 21 12 \n" +
-                "7EC 03 7F 21 12 \n" +
-                "\n" +
-                ">"
-*/
 }
