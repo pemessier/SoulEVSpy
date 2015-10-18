@@ -22,8 +22,7 @@ public class SpeedPreciseMessageFilter extends ObdMessageFilter {
             return false;
         }
 
-        // TODO bit 7 on byte 2 == ???
-        mSpeedKmH = messageData.getDataByte(1) / 2.0;
+        mSpeedKmH = (messageData.getDataByte(1) | ((messageData.getDataByte(2) & 0x80) << 1)) / 2.0;
 
         return true;
     }
