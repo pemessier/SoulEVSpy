@@ -54,6 +54,11 @@ public class ObdMessageData {
         return mData;
     }
 
+    public int getSize()
+    {
+        return mData.size();
+    }
+
     public int getDataByte(int index) {
         return Integer.parseInt(mData.get(index), 16);
     }
