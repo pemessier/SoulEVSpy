@@ -48,12 +48,12 @@ public class BatteryManagementSystemParser {
 
         public int    accumulativeOperatingTime;                // Sec
 
-        public double batteryInletTemperature;                  // °C
-        public double batteryMaxTemperature;                    // °C
-        public double batteryMinTemperature;                    // °C
+        public int    batteryInletTemperature;                  // °C
+        public int    batteryMaxTemperature;                    // °C
+        public int    batteryMinTemperature;                    // °C
 
-        public double heat1Temperature;                         // °C
-        public double heat2Temperature;                         // °C
+        public int    heat1Temperature;                         // °C
+        public int    heat2Temperature;                         // °C
 
         public int    isolationResistance;                      // kOhm
 
@@ -176,13 +176,13 @@ public class BatteryManagementSystemParser {
         final ArrayList<String> line25 = data.getData("25");
 
         // Battery Cell Voltage 01-32
-        bmsData.batteryCellVoltage[0] = HexToInteger(line21.get(0)) * 0.02;
-        bmsData.batteryCellVoltage[1] = HexToInteger(line21.get(1)) * 0.02;
-        bmsData.batteryCellVoltage[2] = HexToInteger(line21.get(2)) * 0.02;
-        bmsData.batteryCellVoltage[3] = HexToInteger(line21.get(3)) * 0.02;
-        bmsData.batteryCellVoltage[4] = HexToInteger(line21.get(4)) * 0.02;
-        bmsData.batteryCellVoltage[5] = HexToInteger(line21.get(5)) * 0.02;
-        bmsData.batteryCellVoltage[6] = HexToInteger(line21.get(6)) * 0.02;
+        bmsData.batteryCellVoltage[0]  = HexToInteger(line21.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[1]  = HexToInteger(line21.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[2]  = HexToInteger(line21.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[3]  = HexToInteger(line21.get(3)) * 0.02;
+        bmsData.batteryCellVoltage[4]  = HexToInteger(line21.get(4)) * 0.02;
+        bmsData.batteryCellVoltage[5]  = HexToInteger(line21.get(5)) * 0.02;
+        bmsData.batteryCellVoltage[6]  = HexToInteger(line21.get(6)) * 0.02;
         bmsData.batteryCellVoltage[7]  = HexToInteger(line22.get(0)) * 0.02;
         bmsData.batteryCellVoltage[8]  = HexToInteger(line22.get(1)) * 0.02;
         bmsData.batteryCellVoltage[9]  = HexToInteger(line22.get(2)) * 0.02;
@@ -232,9 +232,9 @@ public class BatteryManagementSystemParser {
         bmsData.batteryCellVoltage[36] = HexToInteger(line21.get(4)) * 0.02;
         bmsData.batteryCellVoltage[37] = HexToInteger(line21.get(5)) * 0.02;
         bmsData.batteryCellVoltage[38] = HexToInteger(line21.get(6)) * 0.02;
-        bmsData.batteryCellVoltage[39]  = HexToInteger(line22.get(0)) * 0.02;
-        bmsData.batteryCellVoltage[40]  = HexToInteger(line22.get(1)) * 0.02;
-        bmsData.batteryCellVoltage[41]  = HexToInteger(line22.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[39] = HexToInteger(line22.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[40] = HexToInteger(line22.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[41] = HexToInteger(line22.get(2)) * 0.02;
         bmsData.batteryCellVoltage[42] = HexToInteger(line22.get(3)) * 0.02;
         bmsData.batteryCellVoltage[43] = HexToInteger(line22.get(4)) * 0.02;
         bmsData.batteryCellVoltage[44] = HexToInteger(line22.get(5)) * 0.02;
@@ -281,9 +281,9 @@ public class BatteryManagementSystemParser {
         bmsData.batteryCellVoltage[68] = HexToInteger(line21.get(4)) * 0.02;
         bmsData.batteryCellVoltage[69] = HexToInteger(line21.get(5)) * 0.02;
         bmsData.batteryCellVoltage[70] = HexToInteger(line21.get(6)) * 0.02;
-        bmsData.batteryCellVoltage[71]  = HexToInteger(line22.get(0)) * 0.02;
-        bmsData.batteryCellVoltage[72]  = HexToInteger(line22.get(1)) * 0.02;
-        bmsData.batteryCellVoltage[73]  = HexToInteger(line22.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[71] = HexToInteger(line22.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[72] = HexToInteger(line22.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[73] = HexToInteger(line22.get(2)) * 0.02;
         bmsData.batteryCellVoltage[74] = HexToInteger(line22.get(3)) * 0.02;
         bmsData.batteryCellVoltage[75] = HexToInteger(line22.get(4)) * 0.02;
         bmsData.batteryCellVoltage[76] = HexToInteger(line22.get(5)) * 0.02;
@@ -316,7 +316,22 @@ public class BatteryManagementSystemParser {
             return false;
         }
 
-        // TODO
+        final ArrayList<String> line21 = data.getData("21");
+        final ArrayList<String> line22 = data.getData("22");
+        final ArrayList<String> line23 = data.getData("23");
+        final ArrayList<String> line24 = data.getData("24");
+
+        bmsData.batteryMaxTemperature = HexToInteger(line22.get(0));
+        bmsData.batteryMinTemperature = HexToInteger(line21.get(6));
+        bmsData.batteryInletTemperature = HexToInteger(line21.get(5));
+        bmsData.airbagHwireDuty = HexToInteger(line23.get(4));
+        bmsData.heat1Temperature = HexToInteger(line23.get(5));
+        bmsData.heat2Temperature = HexToInteger(line23.get(6));
+        bmsData.maxDeterioration = ( ( HexToInteger(line24.get(0) ) << 8) + HexToInteger(line24.get(1)) ) * 0.1;
+        bmsData.maxDeteriorationCellNo = HexToInteger(line24.get(2));
+        bmsData.minDeterioration = ( ( HexToInteger(line24.get(3) ) << 8) + HexToInteger(line24.get(4)) ) * 0.1;
+        bmsData.minDeteriorationCellNo = HexToInteger(line24.get(5));
+        bmsData.stateOfChargeDisplay = HexToInteger(line24.get(6)) * 0.5;
 
         return true;
     }

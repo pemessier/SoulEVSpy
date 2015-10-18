@@ -126,5 +126,19 @@ public class ObdBmsTest extends AndroidTestCase {
         BatteryManagementSystemParser parser = new BatteryManagementSystemParser();
         Assert.assertTrue(parser.parseMessage2105(msg2105));
 
+        BatteryManagementSystemParser.Data parsedData = parser.getParsedData();
+
+        Assert.assertEquals(14, parsedData.batteryMaxTemperature);
+        Assert.assertEquals(13, parsedData.batteryMinTemperature);
+        Assert.assertEquals(13, parsedData.batteryInletTemperature);
+        Assert.assertEquals(80, parsedData.airbagHwireDuty);
+        Assert.assertEquals(13, parsedData.heat1Temperature);
+        Assert.assertEquals(12, parsedData.heat2Temperature);
+
+        Assert.assertEquals(4.0, parsedData.maxDeterioration);
+        Assert.assertEquals(7, parsedData.maxDeteriorationCellNo);
+        Assert.assertEquals(0.8, parsedData.minDeterioration);
+        Assert.assertEquals(6, parsedData.minDeteriorationCellNo);
+        Assert.assertEquals(9.5, parsedData.stateOfChargeDisplay);
     }
 }
