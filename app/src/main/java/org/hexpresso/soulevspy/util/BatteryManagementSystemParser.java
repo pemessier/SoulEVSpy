@@ -13,52 +13,80 @@ public class BatteryManagementSystemParser {
     private final String BMS_ECU = "7EC";
 
     public class Data {
-        public double stateOfCharge;                // %
-        public double stateOfHealth;                // %
-        public double batteryDcVoltage;             // V
-        public double maxCellVoltage;               // V
-        public double minCellVoltage;               // V
-        public double batteryCurrent;               // A
-        public double availableChargePower;         // 'kW
-        public double availableDischargePower;      // 'kW
-        public double auxiliaryBatteryVoltage;      // V
-        public int batteryModuleTemperature[] = new int[8]; // °C
 
-        public int maxCellVoltageNo; // Cell #
-        public int minCellVoltageNo; // Cell #
-        public double accumulativeChargeCurrent; // Ah
-        public double accumulativeDischargeCurrent; // Ah
-        public double accumulativeChargePower; // kWh
-        public double accumulativeDischargePower; // kWh
-        public int accumulativeOperatingTime; // Sec
+        // BMS Status Flags
+        public boolean bmsMainRelayOnStatus;
+        public boolean bmsControllableState;
+        public boolean bmsWarning;
+        public boolean bmsFault;
+        public boolean bmsWeldFlag;
 
-        //public double inverterCapacitorVoltage;
-        public int driveMotorSpeed;
+        public boolean mcuReady;
+        public boolean mcuMainRelayOffRequest;
+        public boolean mcuControllable;
 
-        // Status BMS main relay	NO	-
-        // Adjustable state BMS	NO	-
-        // BMS Warning	NO	-
-        // BMS error	NO	-
-        // Note BMS-blocking	NO	-
-        // Battery - Max temperature.	10	°C
-        // Battery - Min temperature.	10	°C
-        // Battery input temperature	10	°C
-        // Status BLOWER	0	-
-        // Fan feedback frequency	0	Hz
-        // MCU ready	YES	-
-        // Request MCU main relay from	NO	-
-        // Controllable MCU	NO	-
-        // HCU ready	YES	-
-        // Insulation resistance	1000?	kOhm
+        public boolean hcuReady;
 
-        public double batteryCellVoltage[] = new double[96]; // V
+        public boolean quickChargingNormalStatus;
 
-        // Battery cell voltage deviation	0,00	V
-        // Fast charging normal status	NG	-
-        // Airbag hardwiring duty	80	%
-        // Temperature Heat 1	10	°C
-        // Temperature Heat 2	10	°C
-        // SOC display	88,0	%
+        // High-Voltage Battery General Information
+        public double stateOfCharge;                            // %
+        public double stateOfChargeDisplay;                     // %
+        public double stateOfHealth;                            // %
+
+        public double batteryDcVoltage;                         // V
+        public double batteryCurrent;                           // A
+
+        public double availableChargePower;                     // kW
+        public double availableDischargePower;                  // kW
+
+        public double accumulativeChargeCurrent;                // Ah
+        public double accumulativeDischargeCurrent;             // Ah
+
+        public double accumulativeChargePower;                  // kWh
+        public double accumulativeDischargePower;               // kWh
+
+        public int    accumulativeOperatingTime;                // Sec
+
+        public int    batteryInletTemperature;                  // °C
+        public int    batteryMaxTemperature;                    // °C
+        public int    batteryMinTemperature;                    // °C
+
+        public int    heat1Temperature;                         // °C
+        public int    heat2Temperature;                         // °C
+
+        public int    isolationResistance;                      // kOhm
+
+        // High-Voltage Battery Modules information
+        public int    batteryModuleTemperature[] = new int[8];  // °C
+
+        // High-Voltage Battery Cells Information
+        public double batteryCellVoltage[] = new double[96];    // V
+        public double batteryCellVoltageDeviation;              // V
+
+        public double maxCellVoltage;                           // V
+        public int    maxCellVoltageNo;                         // Cell #
+
+        public double minCellVoltage;                           // V
+        public int    minCellVoltageNo;                         // Cell #
+
+        public double maxDeterioration;                         // %
+        public int    maxDeteriorationCellNo;                   // Cell #
+
+        public double minDeterioration;                         // %
+        public int    minDeteriorationCellNo;                   // Cell #
+
+        // Auxiliary Battery General Information
+        public double auxiliaryBatteryVoltage;                  // V
+
+        // Cooling Fan
+        public boolean fanStatus;                               // On/Off
+        public int     fanFeedbackSignal;                       // Hz
+
+        // Other
+        public int    airbagHwireDuty;                          // %
+        public int    driveMotorSpeed;                          // RPM
+        public double inverterCapacitorVoltage;                 // V
     }
 
     Data bmsData = null;
@@ -148,13 +176,13 @@ public class BatteryManagementSystemParser {
         final ArrayList<String> line25 = data.getData("25");
 
         // Battery Cell Voltage 01-32
-        bmsData.batteryCellVoltage[0] = HexToInteger(line21.get(0)) * 0.02;
-        bmsData.batteryCellVoltage[1] = HexToInteger(line21.get(1)) * 0.02;
-        bmsData.batteryCellVoltage[2] = HexToInteger(line21.get(2)) * 0.02;
-        bmsData.batteryCellVoltage[3] = HexToInteger(line21.get(3)) * 0.02;
-        bmsData.batteryCellVoltage[4] = HexToInteger(line21.get(4)) * 0.02;
-        bmsData.batteryCellVoltage[5] = HexToInteger(line21.get(5)) * 0.02;
-        bmsData.batteryCellVoltage[6] = HexToInteger(line21.get(6)) * 0.02;
+        bmsData.batteryCellVoltage[0]  = HexToInteger(line21.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[1]  = HexToInteger(line21.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[2]  = HexToInteger(line21.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[3]  = HexToInteger(line21.get(3)) * 0.02;
+        bmsData.batteryCellVoltage[4]  = HexToInteger(line21.get(4)) * 0.02;
+        bmsData.batteryCellVoltage[5]  = HexToInteger(line21.get(5)) * 0.02;
+        bmsData.batteryCellVoltage[6]  = HexToInteger(line21.get(6)) * 0.02;
         bmsData.batteryCellVoltage[7]  = HexToInteger(line22.get(0)) * 0.02;
         bmsData.batteryCellVoltage[8]  = HexToInteger(line22.get(1)) * 0.02;
         bmsData.batteryCellVoltage[9]  = HexToInteger(line22.get(2)) * 0.02;
@@ -204,9 +232,9 @@ public class BatteryManagementSystemParser {
         bmsData.batteryCellVoltage[36] = HexToInteger(line21.get(4)) * 0.02;
         bmsData.batteryCellVoltage[37] = HexToInteger(line21.get(5)) * 0.02;
         bmsData.batteryCellVoltage[38] = HexToInteger(line21.get(6)) * 0.02;
-        bmsData.batteryCellVoltage[39]  = HexToInteger(line22.get(0)) * 0.02;
-        bmsData.batteryCellVoltage[40]  = HexToInteger(line22.get(1)) * 0.02;
-        bmsData.batteryCellVoltage[41]  = HexToInteger(line22.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[39] = HexToInteger(line22.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[40] = HexToInteger(line22.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[41] = HexToInteger(line22.get(2)) * 0.02;
         bmsData.batteryCellVoltage[42] = HexToInteger(line22.get(3)) * 0.02;
         bmsData.batteryCellVoltage[43] = HexToInteger(line22.get(4)) * 0.02;
         bmsData.batteryCellVoltage[44] = HexToInteger(line22.get(5)) * 0.02;
@@ -253,9 +281,9 @@ public class BatteryManagementSystemParser {
         bmsData.batteryCellVoltage[68] = HexToInteger(line21.get(4)) * 0.02;
         bmsData.batteryCellVoltage[69] = HexToInteger(line21.get(5)) * 0.02;
         bmsData.batteryCellVoltage[70] = HexToInteger(line21.get(6)) * 0.02;
-        bmsData.batteryCellVoltage[71]  = HexToInteger(line22.get(0)) * 0.02;
-        bmsData.batteryCellVoltage[72]  = HexToInteger(line22.get(1)) * 0.02;
-        bmsData.batteryCellVoltage[73]  = HexToInteger(line22.get(2)) * 0.02;
+        bmsData.batteryCellVoltage[71] = HexToInteger(line22.get(0)) * 0.02;
+        bmsData.batteryCellVoltage[72] = HexToInteger(line22.get(1)) * 0.02;
+        bmsData.batteryCellVoltage[73] = HexToInteger(line22.get(2)) * 0.02;
         bmsData.batteryCellVoltage[74] = HexToInteger(line22.get(3)) * 0.02;
         bmsData.batteryCellVoltage[75] = HexToInteger(line22.get(4)) * 0.02;
         bmsData.batteryCellVoltage[76] = HexToInteger(line22.get(5)) * 0.02;
@@ -288,7 +316,22 @@ public class BatteryManagementSystemParser {
             return false;
         }
 
-        // TODO
+        final ArrayList<String> line21 = data.getData("21");
+        final ArrayList<String> line22 = data.getData("22");
+        final ArrayList<String> line23 = data.getData("23");
+        final ArrayList<String> line24 = data.getData("24");
+
+        bmsData.batteryMaxTemperature = HexToInteger(line22.get(0));
+        bmsData.batteryMinTemperature = HexToInteger(line21.get(6));
+        bmsData.batteryInletTemperature = HexToInteger(line21.get(5));
+        bmsData.airbagHwireDuty = HexToInteger(line23.get(4));
+        bmsData.heat1Temperature = HexToInteger(line23.get(5));
+        bmsData.heat2Temperature = HexToInteger(line23.get(6));
+        bmsData.maxDeterioration = ( ( HexToInteger(line24.get(0) ) << 8) + HexToInteger(line24.get(1)) ) * 0.1;
+        bmsData.maxDeteriorationCellNo = HexToInteger(line24.get(2));
+        bmsData.minDeterioration = ( ( HexToInteger(line24.get(3) ) << 8) + HexToInteger(line24.get(4)) ) * 0.1;
+        bmsData.minDeteriorationCellNo = HexToInteger(line24.get(5));
+        bmsData.stateOfChargeDisplay = HexToInteger(line24.get(6)) * 0.5;
 
         return true;
     }
