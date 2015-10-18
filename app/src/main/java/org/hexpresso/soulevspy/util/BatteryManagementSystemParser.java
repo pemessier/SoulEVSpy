@@ -13,52 +13,80 @@ public class BatteryManagementSystemParser {
     private final String BMS_ECU = "7EC";
 
     public class Data {
-        public double stateOfCharge;                // %
-        public double stateOfHealth;                // %
-        public double batteryDcVoltage;             // V
-        public double maxCellVoltage;               // V
-        public double minCellVoltage;               // V
-        public double batteryCurrent;               // A
-        public double availableChargePower;         // 'kW
-        public double availableDischargePower;      // 'kW
-        public double auxiliaryBatteryVoltage;      // V
-        public int batteryModuleTemperature[] = new int[8]; // °C
 
-        public int maxCellVoltageNo; // Cell #
-        public int minCellVoltageNo; // Cell #
-        public double accumulativeChargeCurrent; // Ah
-        public double accumulativeDischargeCurrent; // Ah
-        public double accumulativeChargePower; // kWh
-        public double accumulativeDischargePower; // kWh
-        public int accumulativeOperatingTime; // Sec
+        // BMS Status Flags
+        public boolean bmsMainRelayOnStatus;
+        public boolean bmsControllableState;
+        public boolean bmsWarning;
+        public boolean bmsFault;
+        public boolean bmsWeldFlag;
 
-        //public double inverterCapacitorVoltage;
-        public int driveMotorSpeed;
+        public boolean mcuReady;
+        public boolean mcuMainRelayOffRequest;
+        public boolean mcuControllable;
 
-        // Status BMS main relay	NO	-
-        // Adjustable state BMS	NO	-
-        // BMS Warning	NO	-
-        // BMS error	NO	-
-        // Note BMS-blocking	NO	-
-        // Battery - Max temperature.	10	°C
-        // Battery - Min temperature.	10	°C
-        // Battery input temperature	10	°C
-        // Status BLOWER	0	-
-        // Fan feedback frequency	0	Hz
-        // MCU ready	YES	-
-        // Request MCU main relay from	NO	-
-        // Controllable MCU	NO	-
-        // HCU ready	YES	-
-        // Insulation resistance	1000?	kOhm
+        public boolean hcuReady;
 
-        public double batteryCellVoltage[] = new double[96]; // V
+        public boolean quickChargingNormalStatus;
 
-        // Battery cell voltage deviation	0,00	V
-        // Fast charging normal status	NG	-
-        // Airbag hardwiring duty	80	%
-        // Temperature Heat 1	10	°C
-        // Temperature Heat 2	10	°C
-        // SOC display	88,0	%
+        // High-Voltage Battery General Information
+        public double stateOfCharge;                            // %
+        public double stateOfChargeDisplay;                     // %
+        public double stateOfHealth;                            // %
+
+        public double batteryDcVoltage;                         // V
+        public double batteryCurrent;                           // A
+
+        public double availableChargePower;                     // kW
+        public double availableDischargePower;                  // kW
+
+        public double accumulativeChargeCurrent;                // Ah
+        public double accumulativeDischargeCurrent;             // Ah
+
+        public double accumulativeChargePower;                  // kWh
+        public double accumulativeDischargePower;               // kWh
+
+        public int    accumulativeOperatingTime;                // Sec
+
+        public double batteryInletTemperature;                  // °C
+        public double batteryMaxTemperature;                    // °C
+        public double batteryMinTemperature;                    // °C
+
+        public double heat1Temperature;                         // °C
+        public double heat2Temperature;                         // °C
+
+        public int    isolationResistance;                      // kOhm
+
+        // High-Voltage Battery Modules information
+        public int    batteryModuleTemperature[] = new int[8];  // °C
+
+        // High-Voltage Battery Cells Information
+        public double batteryCellVoltage[] = new double[96];    // V
+        public double batteryCellVoltageDeviation;              // V
+
+        public double maxCellVoltage;                           // V
+        public int    maxCellVoltageNo;                         // Cell #
+
+        public double minCellVoltage;                           // V
+        public int    minCellVoltageNo;                         // Cell #
+
+        public double maxDeterioration;                         // %
+        public int    maxDeteriorationCellNo;                   // Cell #
+
+        public double minDeterioration;                         // %
+        public int    minDeteriorationCellNo;                   // Cell #
+
+        // Auxiliary Battery General Information
+        public double auxiliaryBatteryVoltage;                  // V
+
+        // Cooling Fan
+        public boolean fanStatus;                               // On/Off
+        public int     fanFeedbackSignal;                       // Hz
+
+        // Other
+        public int    airbagHwireDuty;                          // %
+        public int    driveMotorSpeed;                          // RPM
+        public double inverterCapacitorVoltage;                 // V
     }
 
     Data bmsData = null;
