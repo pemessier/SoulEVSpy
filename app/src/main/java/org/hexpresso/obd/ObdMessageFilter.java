@@ -41,7 +41,7 @@ public abstract class ObdMessageFilter {
 
 
     public interface ObdMessageFilterListener {
-        public void onMessageReceived(ObdMessageFilter messageFilter);
+        void onMessageReceived(ObdMessageFilter messageFilter);
     }
 
     public void addObdMessageFilterListener(ObdMessageFilterListener listener) {

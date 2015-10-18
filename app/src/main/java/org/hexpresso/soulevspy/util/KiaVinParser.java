@@ -67,7 +67,7 @@ public class KiaVinParser {
 
         // Model & series
         final Character trim = vehicleIdentificationNumber.charAt(4);
-        switch(trim.charValue())
+        switch(trim)
         {
             case 'P':
                 mTrim = context.getString(R.string.car_trim_base);
@@ -93,9 +93,9 @@ public class KiaVinParser {
 
         // Model year
         final Character year = vehicleIdentificationNumber.charAt(9);
-        if ( ( year.charValue() >= 'E' ) && ( year.charValue() <= 'Z' ) )
+        if ( ( year >= 'E' ) && ( year <= 'Z' ) )
         {
-            final int yearValue = (int)year.charValue() - (int)'E' + 2014;
+            final int yearValue = (int)year - (int)'E' + 2014;
             mYear = Integer.toString(yearValue);
         } else {
             mYear = context.getString(R.string.car_unknown);
@@ -103,7 +103,7 @@ public class KiaVinParser {
 
         // Production plant
         final Character plant = vehicleIdentificationNumber.charAt(10);
-        switch (plant.charValue())
+        switch (plant)
         {
             case '5':
                 mProductionPlant = context.getString(R.string.car_plant_hwaseong) + " (" + context.getString(R.string.car_south_korea) + ')';

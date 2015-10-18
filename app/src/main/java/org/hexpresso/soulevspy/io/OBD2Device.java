@@ -62,7 +62,7 @@ public class OBD2Device implements BluetoothSPP.OnDataReceivedListener,
 
             Log.d("SOULEV", "Trying to connect to ELM327 device : " + btAddress);
 
-            if ((btAddress != mSharedPreferences.DEFAULT_BLUETOOTH_DEVICE) && (bta != null)) {
+            if ((btAddress.equals(mSharedPreferences.DEFAULT_BLUETOOTH_DEVICE)) && (bta != null)) {
                 // Set the bluetooth adapter name as summary
                 try {
                     if( mBluetoothDevice.isServiceAvailable() )
@@ -115,39 +115,39 @@ public class OBD2Device implements BluetoothSPP.OnDataReceivedListener,
 
     public void onDeviceConnected(String name, String address) {
         // Do something when successfully connected
-        Toast.makeText(mContext, "Connected to " + name + " (" + address + ")", Toast.LENGTH_SHORT);
+        Toast.makeText(mContext, "Connected to " + name + " (" + address + ")", Toast.LENGTH_SHORT).show();
     }
 
     public void onDeviceDisconnected() {
         // Do something when connection was disconnected
-        Toast.makeText(mContext, "Disconnected", Toast.LENGTH_SHORT);
+        Toast.makeText(mContext, "Disconnected", Toast.LENGTH_SHORT).show();
     }
 
     public void onDeviceConnectionFailed() {
         // Do something when connection failed
-        Toast.makeText(mContext, "Connection failed", Toast.LENGTH_SHORT);
+        Toast.makeText(mContext, "Connection failed", Toast.LENGTH_SHORT).show();
     }
 
     public void onServiceStateChanged(int state) {
         String message = null;
         if(state == BluetoothState.STATE_CONNECTED) {
             // Do something when successfully connected
-            message = new String("STATE_CONNECTED");
+            message = "STATE_CONNECTED";
         }
         else if(state == BluetoothState.STATE_CONNECTING){
             // Do something while connecting
-            message = new String("STATE_CONNECTING");
+            message = "STATE_CONNECTING";
         }
         else if(state == BluetoothState.STATE_LISTEN) {
             // Do something when device is waiting for connection
-            message = new String("STATE_LISTEN");
+            message = "STATE_LISTEN";
         }
         else if(state == BluetoothState.STATE_NONE) {
             // Do something when device don't have any connection
-            message = new String("STATE_NONE");
+            message = "STATE_NONE";
         }
 
-        Toast.makeText(mContext, message, Toast.LENGTH_SHORT);
+        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
