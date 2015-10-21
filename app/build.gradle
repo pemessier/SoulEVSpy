@@ -57,4 +57,5 @@ dependencies {
     }
     compile 'com.mikepenz:google-material-typeface:1.2.0.1@aar'
     compile 'com.mikepenz:fontawesome-typeface:4.4.0.1@aar'
+    compile 'org.apache.commons:commons-lang3:3.4'
 }

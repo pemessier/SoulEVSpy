@@ -1,6 +1,7 @@
 package org.hexpresso.soulevspy.util;
 
-import android.util.ArrayMap;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ public class BatteryManagementSystemParser {
     public class Data {
 
         // BMS Status Flags
+        /*
         public boolean bmsMainRelayOnStatus;
         public boolean bmsControllableState;
         public boolean bmsWarning;
@@ -24,18 +26,19 @@ public class BatteryManagementSystemParser {
         public boolean mcuReady;
         public boolean mcuMainRelayOffRequest;
         public boolean mcuControllable;
+        */
 
-        public boolean hcuReady;
+        //public boolean hcuReady;
 
-        public boolean quickChargingNormalStatus;
+        //public boolean quickChargingNormalStatus;
 
         // High-Voltage Battery General Information
         public double stateOfCharge;                            // %
         public double stateOfChargeDisplay;                     // %
-        public double stateOfHealth;                            // %
+        //public double stateOfHealth;                            // %
 
         public double batteryDcVoltage;                         // V
-        public double batteryCurrent;                           // A
+        //public double batteryCurrent;                           // A
 
         public double availableChargePower;                     // kW
         public double availableDischargePower;                  // kW
@@ -55,14 +58,14 @@ public class BatteryManagementSystemParser {
         public int    heat1Temperature;                         // °C
         public int    heat2Temperature;                         // °C
 
-        public int    isolationResistance;                      // kOhm
+        //public int    isolationResistance;                      // kOhm
 
         // High-Voltage Battery Modules information
         public int    batteryModuleTemperature[] = new int[8];  // °C
 
         // High-Voltage Battery Cells Information
         public double batteryCellVoltage[] = new double[96];    // V
-        public double batteryCellVoltageDeviation;              // V
+        //public double batteryCellVoltageDeviation;              // V
 
         public double maxCellVoltage;                           // V
         public int    maxCellVoltageNo;                         // Cell #
@@ -80,13 +83,24 @@ public class BatteryManagementSystemParser {
         public double auxiliaryBatteryVoltage;                  // V
 
         // Cooling Fan
-        public boolean fanStatus;                               // On/Off
-        public int     fanFeedbackSignal;                       // Hz
+        //public boolean fanStatus;                               // On/Off
+        //public int     fanFeedbackSignal;                       // Hz
 
         // Other
         public int    airbagHwireDuty;                          // %
         public int    driveMotorSpeed;                          // RPM
-        public double inverterCapacitorVoltage;                 // V
+        //public double inverterCapacitorVoltage;                 // V
+
+
+        /**
+         * Print the data structure values (for debugging)
+         * @return Data structure as string
+         */
+        @Override
+        public String toString()
+        {
+            return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE, false);
+        }
     }
 
     Data bmsData = null;
