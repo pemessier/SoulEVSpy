@@ -89,7 +89,7 @@ public class ClientPreferencesFragment extends PreferenceFragment implements Sha
         String btSummary = getString(R.string.pref_bluetooth_device_summary);
         String btAddress = mSharedPreferences.getBluetoothDeviceStringValue();
         BluetoothAdapter bta = BluetoothAdapter.getDefaultAdapter();
-        if ((btAddress != mSharedPreferences.DEFAULT_BLUETOOTH_DEVICE) && (bta != null))
+        if (!mSharedPreferences.DEFAULT_BLUETOOTH_DEVICE.equals(btAddress) && (bta != null))
         {
             // Set the bluetooth adapter name as summary
             try {
@@ -126,8 +126,8 @@ public class ClientPreferencesFragment extends PreferenceFragment implements Sha
 
             // Set the values in the list
             listBtDevices.setEnabled(true);
-            listBtDevices.setEntries(pairedDeviceStrings.toArray(new CharSequence[0]));
-            listBtDevices.setEntryValues(pairedDevicesValues.toArray(new CharSequence[0]));
+            listBtDevices.setEntries(pairedDeviceStrings.toArray(new CharSequence[1]));
+            listBtDevices.setEntryValues(pairedDevicesValues.toArray(new CharSequence[1]));
         }
     }
 
@@ -136,7 +136,7 @@ public class ClientPreferencesFragment extends PreferenceFragment implements Sha
      */
     private void setApplicationVersion() {
         Preference pref = findPreference(getString(R.string.key_application_version));
-        String version = new String();
+        String version = "";
         try {
             String packageName = getActivity().getPackageName();
             PackageInfo info = getActivity().getPackageManager().getPackageInfo(packageName, 0);
