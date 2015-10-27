@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public abstract class AbstractCommand implements Command {
 
     protected String mCommand = null;                          // ELM327 command
-    protected long  mResponseTimeDelay = 200;                  // Time delay before receiving the response, in milliseconds
+    protected long mResponseTimeDelay = 200;                   // Time delay before receiving the response, in milliseconds
     protected Response mRawResponse = null;                    // Raw response data
 
     private ArrayList<ResponseFilter> mResponseFilters = null; // Response filters
