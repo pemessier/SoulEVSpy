@@ -88,7 +88,7 @@ public abstract class AbstractCommand implements Command {
      * @throws InterruptedException
      */
     protected void send(OutputStream out) throws IOException, InterruptedException {
-        final String command = new String(mCommand + '\r');
+        final String command = mCommand + '\r';
         out.write(command.getBytes());
         out.flush();
     }

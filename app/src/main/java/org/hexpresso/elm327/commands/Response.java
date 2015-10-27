@@ -14,8 +14,8 @@ public class Response {
      * Constructor
      * @param rawResponse The raw ELM327 response as string
      */
-    public Response(String rawResponse) {
-        mRawResponse = new String(rawResponse);
+    public Response(final String rawResponse) {
+        mRawResponse = rawResponse;
 
         // Split the raw response into lines
         final String [] lines = rawResponse.replaceAll("\\r", "").split("\\n");

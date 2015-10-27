@@ -33,7 +33,7 @@ public class ObdMessageDataTest extends AndroidTestCase {
     BatteryChargingMessageFilter.ConnectedChargerType chargerType = BatteryChargingMessageFilter.ConnectedChargerType.NONE;
 
     public void testMessageNormalData() {
-        String message598 = new String("598 00 AF 00 00 81 44 17 16");
+        final String message598 = "598 00 AF 00 00 81 44 17 16";
 
         ObdMessageData messageData = new ObdMessageData(message598);
 
@@ -53,7 +53,7 @@ public class ObdMessageDataTest extends AndroidTestCase {
     }
 
     public void testMessageErrorData() {
-        String message018 = new String("018 A1 00 01 60 01 00 20 10 <DATA ERROR");
+        final String message018 = "018 A1 00 01 60 01 00 20 10 <DATA ERROR";
 
         ObdMessageData messageData = new ObdMessageData(message018);
 
