@@ -7,7 +7,7 @@ import java.util.Arrays;
  * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-24.
  */
 public class Response {
-            String            mRawResponse = null;  // The raw ELM327 response as string
+    private String            mRawResponse   = null;  // The raw ELM327 response as string
     private ArrayList<String> mResponseLines = null;  // Each array element represents a line
 
     /**
@@ -17,8 +17,8 @@ public class Response {
     public Response(String rawResponse) {
         mRawResponse = new String(rawResponse);
 
-        // Remove all spaces, and split the raw response into lines
-        final String [] lines = rawResponse.replaceAll(" ", "").replaceAll("\\r", "").split("\\n");
+        // Split the raw response into lines
+        final String [] lines = rawResponse.replaceAll("\\r", "").split("\\n");
         mResponseLines = new ArrayList(Arrays.asList(lines));
     }
 
@@ -27,6 +27,10 @@ public class Response {
 
     public ArrayList<String> getLines() {
         return mResponseLines;
+    }
+
+    public String rawResponse() {
+        return mRawResponse;
     }
 
     public int get(int byteIndex) {

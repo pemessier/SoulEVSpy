@@ -12,6 +12,7 @@ import org.hexpresso.elm327.exceptions.UnsupportedCommandException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 /**
  * The AbstractCommand class represents an ELM327 command.
@@ -20,13 +21,13 @@ import java.io.OutputStream;
  */
 public abstract class AbstractCommand implements Command {
 
-    protected String mCommand = null;         // ELM327 command
-    protected long  mResponseTimeDelay = 200; // Time delay before receiving the response, in milliseconds
-    protected Response mRawResponse = null;   // Raw response data
-    protected ResponseFilter mResponseFilter = null;
+    protected String mCommand = null;                          // ELM327 command
+    protected long  mResponseTimeDelay = 200;                  // Time delay before receiving the response, in milliseconds
+    protected Response mRawResponse = null;                    // Raw response data
 
-    private long mRunStartTimestamp;          // Timestamp before sending the command
-    private long mRunEndTimestamp;            // Timestamp after receiving the command response
+    private ArrayList<ResponseFilter> mResponseFilters = null; // Response filters
+    private long mRunStartTimestamp;                           // Timestamp before sending the command
+    private long mRunEndTimestamp;                             // Timestamp after receiving the command response
 
     /**
      * Error classes to be tested in order
@@ -103,9 +104,11 @@ public abstract class AbstractCommand implements Command {
         // Check for errors
         checkForErrors();
 
-        // Filter response
-        if(mResponseFilter != null) {
-            mResponseFilter.onResponseReceived(mRawResponse);
+        // Execute response filters (if any)
+        if(mResponseFilters != null) {
+            for(ResponseFilter filter: mResponseFilters) {
+                filter.onResponseReceived(mRawResponse);
+            }
         }
     }
 
@@ -142,7 +145,9 @@ public abstract class AbstractCommand implements Command {
      */
         String rawResponse = res.toString();
         rawResponse = rawResponse.replaceAll("SEARCHING", "");
-        rawResponse = rawResponse.replaceAll("(BUS INIT)|(BUSINIT)|(\\.)", "");
+
+        // TODO check this
+        //rawResponse = rawResponse.replaceAll("(BUS INIT)|(BUSINIT)|(\\.)", "");
 
     /*
      * Data may have echo or informative text like "INIT BUS..." or similar.
@@ -168,7 +173,7 @@ public abstract class AbstractCommand implements Command {
                 throw new RuntimeException(e);
             }
 
-            if (messageError.isError(mRawResponse.mRawResponse)) {
+            if (messageError.isError(mRawResponse.rawResponse())) {
                 throw messageError;
             }
         }
@@ -178,7 +183,11 @@ public abstract class AbstractCommand implements Command {
         return mRawResponse;
     }
 
-    protected void withResponseFilter(ResponseFilter responseFilter) {
-        mResponseFilter = responseFilter;
+    protected AbstractCommand addResponseFilter(ResponseFilter responseFilter) {
+        if(mResponseFilters == null) {
+            mResponseFilters = new ArrayList<>();
+        }
+        mResponseFilters.add(responseFilter);
+        return this;
     }
 }

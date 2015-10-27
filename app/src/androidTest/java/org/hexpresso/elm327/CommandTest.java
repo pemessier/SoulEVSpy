@@ -7,6 +7,8 @@ import junit.framework.Assert;
 import org.hexpresso.elm327.commands.AbstractCommand;
 import org.hexpresso.elm327.commands.Response;
 import org.hexpresso.elm327.commands.ResponseFilter;
+import org.hexpresso.elm327.commands.protocol.PrintVersionIdCommand;
+import org.hexpresso.elm327.commands.protocol.ReadInputVoltageCommand;
 import org.hexpresso.soulevspy.obd.commands.BatteryManagementSystemCommand;
 
 import java.io.ByteArrayInputStream;
@@ -37,7 +39,7 @@ public class CommandTest extends AndroidTestCase {
 
         public ElmCommand() {
             super("Command");
-            withResponseFilter(this);
+            addResponseFilter(this);
         }
 
         @Override
@@ -55,7 +57,6 @@ public class CommandTest extends AndroidTestCase {
 
         ElmCommand cmd = new ElmCommand();
         try {
-            input.read(response.getBytes());
             cmd.execute(input, output);
         }
         catch(Exception e)
@@ -71,12 +72,10 @@ public class CommandTest extends AndroidTestCase {
      *
      */
     public void testBmsCommand() {
-        final String response = new String("ABCD");
         input = new ByteArrayInputStream(msg2101.getBytes());
 
         BatteryManagementSystemCommand cmd = new BatteryManagementSystemCommand();
         try {
-            input.read(response.getBytes());
             cmd.execute(input, output);
         }
         catch(Exception e)
@@ -84,13 +83,46 @@ public class CommandTest extends AndroidTestCase {
             // ...
         }
 
-        Assert.assertEquals(8, cmd.getResponse().getLines().size());
-        Assert.assertEquals(33, cmd.getResponse().get(0));
-        Assert.assertEquals(232, cmd.getResponse().get(7, 6));
+        Assert.assertEquals(9, cmd.getResponse().getLines().size());
+        Assert.assertEquals(16, cmd.getResponse().get(0));
+        Assert.assertEquals(232, cmd.getResponse().get(8, 6));
 
         Assert.assertEquals(10.5, cmd.getStateOfCharge());
         Assert.assertEquals(10.5, cmd.getStateOfCharge());
     }
+
+    public void testReadInputVoltage() {
+        final String response = new String("12.5V");
+        input = new ByteArrayInputStream(response.getBytes());
+
+        ReadInputVoltageCommand cmd = new ReadInputVoltageCommand();
+        try {
+            cmd.execute(input, output);
+        }
+        catch(Exception e)
+        {
+            // ...
+        }
+
+        Assert.assertEquals(12.5, cmd.getInputVoltage());
+    }
+
+    public void testVersion() {
+        final String response = new String("ELM327 v1.5");
+        input = new ByteArrayInputStream(response.getBytes());
+
+        PrintVersionIdCommand cmd = new PrintVersionIdCommand();
+        try {
+            cmd.execute(input, output);
+        }
+        catch(Exception e)
+        {
+            // ...
+        }
+
+        Assert.assertEquals("ELM327 v1.5", cmd.getVersion());
+    }
+
 
     /**
      *

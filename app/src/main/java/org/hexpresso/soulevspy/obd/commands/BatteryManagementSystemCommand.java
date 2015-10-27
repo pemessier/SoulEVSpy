@@ -1,8 +1,9 @@
 package org.hexpresso.soulevspy.obd.commands;
 
 import org.hexpresso.elm327.commands.AbstractCommand;
-import org.hexpresso.elm327.commands.Response;
+import org.hexpresso.elm327.commands.ResponseFilter;
 import org.hexpresso.elm327.filters.RegularExpressionResponseFilter;
+import org.hexpresso.elm327.filters.RemoveSpacesResponseFilter;
 
 /**
  * Battery Management System command for the Soul EV
@@ -10,7 +11,7 @@ import org.hexpresso.elm327.filters.RegularExpressionResponseFilter;
  *
  * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-22.
  */
-public class BatteryManagementSystemCommand extends AbstractCommand{
+public class BatteryManagementSystemCommand extends AbstractCommand {
 
     private Double stateOfCharge;
 
@@ -21,7 +22,8 @@ public class BatteryManagementSystemCommand extends AbstractCommand{
         super("21 01");
 
         // Only keep messages from 7EC ECU
-        withResponseFilter(new RegularExpressionResponseFilter("^7EC(.*)$"));
+        addResponseFilter(new RegularExpressionResponseFilter("^7EC(.*)$"));
+        addResponseFilter(new RemoveSpacesResponseFilter());
     }
 
     /**
@@ -29,7 +31,7 @@ public class BatteryManagementSystemCommand extends AbstractCommand{
      */
     public double getStateOfCharge() {
         if (stateOfCharge == null) {
-            stateOfCharge = new Double( getResponse().get(0, 1) * 0.5);
+            stateOfCharge = new Double( getResponse().get(1, 1) * 0.5);
         }
         return stateOfCharge.doubleValue();
     }
