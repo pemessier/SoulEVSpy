@@ -67,6 +67,7 @@ public abstract class AbstractCommand implements Command {
      * @throws IOException
      * @throws InterruptedException
      */
+    @Override
     public void execute(InputStream in, OutputStream out) throws IOException, InterruptedException {
 
         // Send the command
@@ -179,6 +180,7 @@ public abstract class AbstractCommand implements Command {
         }
     }
 
+    @Override
     public Response getResponse() {
         return mRawResponse;
     }

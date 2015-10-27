@@ -12,4 +12,6 @@ import java.io.OutputStream;
 public interface Command {
 
     void execute(InputStream in, OutputStream out) throws IOException, InterruptedException;
+
+    Response getResponse();
 }
