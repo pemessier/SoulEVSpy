@@ -3,7 +3,6 @@ package org.hexpresso.soulevspy.obd;
 import android.test.AndroidTestCase;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
 import org.hexpresso.obd.ObdMessageData;
 

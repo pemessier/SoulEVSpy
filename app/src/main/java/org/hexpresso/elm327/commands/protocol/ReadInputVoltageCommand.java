@@ -1,7 +1,5 @@
 package org.hexpresso.elm327.commands.protocol;
 
-import android.util.Log;
-
 import org.hexpresso.elm327.commands.AbstractCommand;
 import org.hexpresso.elm327.filters.RegularExpressionResponseFilter;
 
