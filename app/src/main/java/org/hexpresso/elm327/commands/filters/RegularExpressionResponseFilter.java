@@ -1,4 +1,4 @@
-package org.hexpresso.elm327.filters;
+package org.hexpresso.elm327.commands.filters;
 
 import org.hexpresso.elm327.commands.Response;
 import org.hexpresso.elm327.commands.ResponseFilter;

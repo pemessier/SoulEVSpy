@@ -1,8 +1,8 @@
 package org.hexpresso.soulevspy.obd.commands;
 
 import org.hexpresso.elm327.commands.AbstractCommand;
-import org.hexpresso.elm327.filters.RegularExpressionResponseFilter;
-import org.hexpresso.elm327.filters.RemoveSpacesResponseFilter;
+import org.hexpresso.elm327.commands.filters.RegularExpressionResponseFilter;
+import org.hexpresso.elm327.commands.filters.RemoveSpacesResponseFilter;
 
 /**
  * Battery Management System command for the Soul EV

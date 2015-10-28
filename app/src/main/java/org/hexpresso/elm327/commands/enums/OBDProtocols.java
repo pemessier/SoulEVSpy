@@ -1,4 +1,4 @@
-package org.hexpresso.elm327.enums;
+package org.hexpresso.elm327.commands.enums;
 
 /**
  * All OBD protocols supported by the ELM327.

@@ -48,12 +48,6 @@ public abstract class AbstractCommand implements Command {
      * @param command ELM327 command to send
      */
     public AbstractCommand(String command) {
-        if (command == null) {
-            throw new NullPointerException("ELM327 command is null");
-        } else if (command.isEmpty()) {
-            throw new RuntimeException("ELM327 command is empty");
-        }
-
         mCommand = command;
     }
 
@@ -161,7 +155,7 @@ public abstract class AbstractCommand implements Command {
         mRawResponse = new Response(rawResponse);
     }
 
-    void checkForErrors() {
+    protected void checkForErrors() {
         for (Class<? extends ResponseException> errorClass : ERROR_CLASSES) {
             ResponseException messageError;
 
