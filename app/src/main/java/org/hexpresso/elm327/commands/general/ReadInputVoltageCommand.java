@@ -1,4 +1,4 @@
-package org.hexpresso.elm327.commands.protocol;
+package org.hexpresso.elm327.commands.general;
 
 import org.hexpresso.elm327.commands.AbstractCommand;
 import org.hexpresso.elm327.commands.filters.RegularExpressionResponseFilter;

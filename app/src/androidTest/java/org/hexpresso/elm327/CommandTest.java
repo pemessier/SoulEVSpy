@@ -7,8 +7,8 @@ import junit.framework.Assert;
 import org.hexpresso.elm327.commands.AbstractCommand;
 import org.hexpresso.elm327.commands.Response;
 import org.hexpresso.elm327.commands.ResponseFilter;
-import org.hexpresso.elm327.commands.protocol.PrintVersionIdCommand;
-import org.hexpresso.elm327.commands.protocol.ReadInputVoltageCommand;
+import org.hexpresso.elm327.commands.general.PrintVersionIdCommand;
+import org.hexpresso.elm327.commands.general.ReadInputVoltageCommand;
 import org.hexpresso.soulevspy.obd.commands.BatteryManagementSystemCommand;
 
 import java.io.ByteArrayInputStream;

@@ -1,7 +1,7 @@
-package org.hexpresso.elm327.commands.protocol;
+package org.hexpresso.elm327.commands.obd;
 
 import org.hexpresso.elm327.commands.AbstractCommand;
-import org.hexpresso.elm327.commands.enums.OBDProtocols;
+import org.hexpresso.elm327.commands.obd.OBDProtocols;
 
 /**
  * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-26.
