@@ -62,7 +62,7 @@ public class OBD2Device implements BluetoothSPP.OnDataReceivedListener,
 
             Log.d("SOULEV", "Trying to connect to ELM327 device : " + btAddress);
 
-            if ((btAddress.equals(mSharedPreferences.DEFAULT_BLUETOOTH_DEVICE)) && (bta != null)) {
+            if (!btAddress.equals(mSharedPreferences.DEFAULT_BLUETOOTH_DEVICE) && (bta != null)) {
                 // Set the bluetooth adapter name as summary
                 try {
                     if( mBluetoothDevice.isServiceAvailable() )
