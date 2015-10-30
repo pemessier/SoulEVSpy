@@ -1,4 +1,4 @@
-package org.hexpresso.elm327.commands.obd;
+package org.hexpresso.elm327.commands.protocol.obd;
 
 import org.hexpresso.elm327.commands.AbstractCommand;
 

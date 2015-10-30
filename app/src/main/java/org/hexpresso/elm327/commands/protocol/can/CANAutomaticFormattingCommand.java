@@ -1,4 +1,4 @@
-package org.hexpresso.elm327.commands.can;
+package org.hexpresso.elm327.commands.protocol.can;
 
 import org.hexpresso.elm327.commands.AbstractCommand;
 

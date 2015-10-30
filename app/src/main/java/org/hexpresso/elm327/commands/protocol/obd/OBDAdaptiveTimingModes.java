@@ -1,4 +1,4 @@
-package org.hexpresso.elm327.commands.obd;
+package org.hexpresso.elm327.commands.protocol.obd;
 
 /**
  * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-26.

@@ -1,4 +1,4 @@
-package org.hexpresso.elm327.commands.obd;
+package org.hexpresso.elm327.commands.protocol.obd;
 
 /**
  * All OBD protocols supported by the ELM327.
