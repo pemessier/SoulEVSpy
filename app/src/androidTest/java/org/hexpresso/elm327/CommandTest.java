@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import org.hexpresso.elm327.commands.AbstractCommand;
 import org.hexpresso.elm327.commands.Response;
 import org.hexpresso.elm327.commands.ResponseFilter;
+import org.hexpresso.elm327.commands.general.VehicleIdentifierNumberCommand;
 import org.hexpresso.elm327.commands.protocol.PrintVersionIdCommand;
 import org.hexpresso.elm327.commands.protocol.ReadInputVoltageCommand;
 import org.hexpresso.soulevspy.obd.commands.BatteryManagementSystemCommand;
@@ -123,6 +124,25 @@ public class CommandTest extends AndroidTestCase {
         Assert.assertEquals("ELM327 v1.5", cmd.getVersion());
     }
 
+    public void testVehicleIdentificationNumber() {
+        final String vin = "7EA 10 14 49 02 01 4B 4E 44 \n" +
+                           "7EA 21 4A 58 33 41 45 31 47 \n" +
+                           "7EA 22 37 31 32 33 34 35 36";
+
+        input = new ByteArrayInputStream(vin.getBytes());
+
+        VehicleIdentifierNumberCommand cmd = new VehicleIdentifierNumberCommand();
+        try {
+            cmd.execute(input, output);
+        }
+        catch(Exception e)
+        {
+            // ...
+        }
+
+        Assert.assertEquals("KNDJX3AE1G7123456", cmd.getValue());
+
+    }
 
     /**
      *
