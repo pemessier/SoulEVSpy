@@ -16,7 +16,7 @@ public class ObdBmsTest extends AndroidTestCase {
 
     final String msg2101 = "7EC 10 3D 61 01 FF FF FF FF \n" +
                            "7EA 10 0E 61 01 F0 00 00 00 \n" +
-                           "7EC 21 15 23 28 1E C8 03 00 \n" +
+                           "7EC 21 15 23 28 1E C8 A3 00 \n" +
                            "7EA 21 ED 05 02 03 00 00 00 \n" +
                            "7EC 22 1E 0C DD 0E 0D 0E 0D \n" +
                            "7EA 22 00 00 00 00 00 00 00 \n" +
@@ -70,6 +70,9 @@ public class ObdBmsTest extends AndroidTestCase {
 
         BatteryManagementSystemParser.Data parsedData = parser.getParsedData();
         Assert.assertEquals(10.5, parsedData.stateOfCharge);
+        Assert.assertEquals(true, parsedData.bmsIsCharging);
+        Assert.assertEquals(false, parsedData.bmsChademoIsPlugged);
+        Assert.assertEquals(true, parsedData.bmsJ1772IsPlugged);
         Assert.assertEquals(329.3, parsedData.batteryDcVoltage);
         Assert.assertEquals(3.42, parsedData.maxCellVoltage);
         Assert.assertEquals(3.42, parsedData.minCellVoltage);

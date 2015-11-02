@@ -32,6 +32,11 @@ public class BatteryManagementSystemParser {
 
         //public boolean quickChargingNormalStatus;
 
+        // BMS Charger status
+        public boolean bmsIsCharging;
+        public boolean bmsChademoIsPlugged;
+        public boolean bmsJ1772IsPlugged;
+
         // High-Voltage Battery General Information
         public double stateOfCharge;                            // %
         public double stateOfChargeDisplay;                     // %
@@ -130,7 +135,10 @@ public class BatteryManagementSystemParser {
         final ArrayList<String> line27 = data.getData("27");
         final ArrayList<String> line28 = data.getData("28");
 
-        bmsData.stateOfCharge = HexToInteger(line21.get(0)) * 0.5;
+        bmsData.stateOfCharge       = HexToInteger(line21.get(0)) * 0.5;
+        bmsData.bmsIsCharging       = (HexToInteger(line21.get(5)) & 0x80) != 0;
+        bmsData.bmsChademoIsPlugged = (HexToInteger(line21.get(5)) & 0x40) != 0;
+        bmsData.bmsJ1772IsPlugged   = (HexToInteger(line21.get(5)) & 0x20) != 0;
 
         bmsData.batteryDcVoltage = ( ( HexToInteger(line22.get(1) ) << 8) + HexToInteger(line22.get(2)) ) * 0.1;
         bmsData.maxCellVoltage = HexToInteger(line23.get(5)) * 0.02;
