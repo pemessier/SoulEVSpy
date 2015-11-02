@@ -56,7 +56,7 @@ public class CommandTest extends AndroidTestCase {
         final String response = "ABCD";
         input = new ByteArrayInputStream(response.getBytes());
 
-        ElmCommand cmd = new ElmCommand();
+        ElmCommand cmd = (ElmCommand) new ElmCommand().withAutoProcessResponse(true);
         try {
             cmd.execute(input, output);
         }
@@ -75,7 +75,7 @@ public class CommandTest extends AndroidTestCase {
     public void testBmsCommand() {
         input = new ByteArrayInputStream(msg2101.getBytes());
 
-        BatteryManagementSystemCommand cmd = new BatteryManagementSystemCommand();
+        BatteryManagementSystemCommand cmd = (BatteryManagementSystemCommand) new BatteryManagementSystemCommand().withAutoProcessResponse(true);
         try {
             cmd.execute(input, output);
         }
@@ -96,7 +96,7 @@ public class CommandTest extends AndroidTestCase {
         final String response = "12.5V";
         input = new ByteArrayInputStream(response.getBytes());
 
-        ReadInputVoltageCommand cmd = new ReadInputVoltageCommand();
+        ReadInputVoltageCommand cmd = (ReadInputVoltageCommand) new ReadInputVoltageCommand().withAutoProcessResponse(true);
         try {
             cmd.execute(input, output);
         }
@@ -112,7 +112,7 @@ public class CommandTest extends AndroidTestCase {
         final String response = "ELM327 v1.5";
         input = new ByteArrayInputStream(response.getBytes());
 
-        PrintVersionIdCommand cmd = new PrintVersionIdCommand();
+        PrintVersionIdCommand cmd = (PrintVersionIdCommand) new PrintVersionIdCommand().withAutoProcessResponse(true);
         try {
             cmd.execute(input, output);
         }
@@ -131,7 +131,7 @@ public class CommandTest extends AndroidTestCase {
 
         input = new ByteArrayInputStream(vin.getBytes());
 
-        VehicleIdentifierNumberCommand cmd = new VehicleIdentifierNumberCommand();
+        VehicleIdentifierNumberCommand cmd = (VehicleIdentifierNumberCommand) new VehicleIdentifierNumberCommand().withAutoProcessResponse(true);
         try {
             cmd.execute(input, output);
         }

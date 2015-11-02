@@ -12,7 +12,6 @@ import org.hexpresso.elm327.exceptions.UnsupportedCommandException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 
 /**
  * The AbstractCommand class represents an ELM327 command.
@@ -23,11 +22,11 @@ public abstract class AbstractCommand implements Command {
 
     protected String mCommand = null;                          // ELM327 command
     protected long mResponseTimeDelay = 200;                   // Time delay before receiving the response, in milliseconds
-    protected Response mRawResponse = null;                    // Raw response data
+    protected Response mResponse = new Response();             // Response object
 
-    private ArrayList<ResponseFilter> mResponseFilters = null; // Response filters
     private long mRunStartTimestamp;                           // Timestamp before sending the command
     private long mRunEndTimestamp;                             // Timestamp after receiving the command response
+    private boolean mWithAutoProcessResponse = false;          //
 
     /**
      * Error classes to be tested in order
@@ -98,13 +97,6 @@ public abstract class AbstractCommand implements Command {
 
         // Check for errors
         checkForErrors();
-
-        // Execute response filters (if any)
-        if(mResponseFilters != null) {
-            for(ResponseFilter filter: mResponseFilters) {
-                filter.onResponseReceived(mRawResponse);
-            }
-        }
     }
 
     protected void readRawData(InputStream in) throws IOException {
@@ -150,9 +142,13 @@ public abstract class AbstractCommand implements Command {
      * everything from the last carriage return before those two (trimmed above).
      */
         //kills multiline.. rawData = rawData.substring(rawData.lastIndexOf(13) + 1);
-        //mRawResponse = mRawResponse.replaceAll("\\s", "");//removes all [ \t\n\x0B\f\r]
+        //mResponse = mResponse.replaceAll("\\s", "");//removes all [ \t\n\x0B\f\r]
 
-        mRawResponse = new Response(rawResponse);
+        // Generate the Response object
+        mResponse.setRawResponse(rawResponse);
+        if (mWithAutoProcessResponse) {
+            mResponse.process();
+        }
     }
 
     protected void checkForErrors() {
@@ -168,7 +164,7 @@ public abstract class AbstractCommand implements Command {
                 throw new RuntimeException(e);
             }
 
-            if (messageError.isError(mRawResponse.rawResponse())) {
+            if (messageError.isError(mResponse.rawResponse())) {
                 throw messageError;
             }
         }
@@ -176,14 +172,22 @@ public abstract class AbstractCommand implements Command {
 
     @Override
     public Response getResponse() {
-        return mRawResponse;
+        return mResponse;
     }
 
     protected AbstractCommand addResponseFilter(ResponseFilter responseFilter) {
-        if(mResponseFilters == null) {
-            mResponseFilters = new ArrayList<>();
-        }
-        mResponseFilters.add(responseFilter);
+        mResponse.addResponseFilter(responseFilter);
+        return this;
+    }
+
+    /**
+     *
+     *
+     * @param autoProcessResponse
+     * @return
+     */
+    public AbstractCommand withAutoProcessResponse(boolean autoProcessResponse) {
+        mWithAutoProcessResponse = autoProcessResponse;
         return this;
     }
 }

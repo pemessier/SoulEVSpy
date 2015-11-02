@@ -7,22 +7,52 @@ import java.util.Arrays;
  * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-24.
  */
 public class Response {
-    private String            mRawResponse   = null;  // The raw ELM327 response as string
-    private ArrayList<String> mResponseLines = null;  // Each array element represents a line
+    private String            mRawResponse   = null;            // The raw ELM327 response as string
+    private ArrayList<String> mResponseLines = null;            // Each array element represents a line
+    private ArrayList<ResponseFilter> mResponseFilters = null;  // Response filters
 
     /**
      * Constructor
-     * @param rawResponse The raw ELM327 response as string
      */
-    public Response(final String rawResponse) {
-        mRawResponse = rawResponse;
-
-        // Split the raw response into lines
-        final String [] lines = rawResponse.replaceAll("\\r", "").split("\\n");
-        mResponseLines = new ArrayList(Arrays.asList(lines));
+    Response() {
     }
 
-    private Response() {
+    /**
+     * Sets the raw ELM327 response string
+     * @param rawResponse
+     */
+    public void setRawResponse(String rawResponse) {
+        mRawResponse = rawResponse;
+    }
+
+    /**
+     * Adds a response filter to be executed when processing the response
+     * @param responseFilter A ResponseFilter object
+     * @return Current response object
+     */
+    public Response addResponseFilter(ResponseFilter responseFilter) {
+        if(mResponseFilters == null) {
+            mResponseFilters = new ArrayList<>();
+        }
+        mResponseFilters.add(responseFilter);
+        return this;
+    }
+
+    /**
+     * Processes the current Response object.
+     */
+    public void process() {
+        if (mResponseLines == null) {
+            final String[] lines = mRawResponse.replaceAll("\\r", "").split("\\n");
+            mResponseLines = new ArrayList(Arrays.asList(lines));
+        }
+
+        // Execute response filters (if any)
+        if(mResponseFilters != null) {
+            for(ResponseFilter filter: mResponseFilters) {
+                filter.onResponseReceived(this);
+            }
+        }
     }
 
     public ArrayList<String> getLines() {

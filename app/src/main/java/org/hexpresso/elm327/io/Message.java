@@ -27,7 +27,7 @@ public class Message {
     private final long  mIdentifier;
     private State mState;
 
-    public Message(Command command) {
+    Message(Command command) {
         mCommand = command;
         mIdentifier = messageIdentifier.incrementAndGet();
         mState = State.READY;
