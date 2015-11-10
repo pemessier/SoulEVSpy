@@ -13,6 +13,40 @@ public class BatteryManagementSystemParser {
 
     private final String BMS_ECU = "7EC";
 
+    public enum CoolingFanSpeeds {
+        FAN_1ST(1),
+        FAN_2ND(2),
+        FAN_3RD(3),
+        FAN_4TH(4),
+        FAN_5TH(5),
+        FAN_6TH(6),
+        FAN_7TH(7),
+        FAN_8TH(8),
+        FAN_9TH(9),
+        FAN_STOP(0);
+
+        private final int value;
+
+        CoolingFanSpeeds(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public static CoolingFanSpeeds fromInteger(int value) {
+            for( CoolingFanSpeeds type : CoolingFanSpeeds.values() )  {
+                if ( type.getValue() == value ) {
+                    return type;
+                }
+            }
+
+            return CoolingFanSpeeds.FAN_STOP;
+        }
+
+    }
+
     public class Data {
 
         // BMS Status Flags
@@ -88,8 +122,8 @@ public class BatteryManagementSystemParser {
         public double auxiliaryBatteryVoltage;                  // V
 
         // Cooling Fan
-        //public boolean fanStatus;                               // On/Off
-        //public int     fanFeedbackSignal;                       // Hz
+        public CoolingFanSpeeds fanStatus;                      // 0-9
+        public int              fanFeedbackSignal;              // Hz
 
         // Other
         public int    airbagHwireDuty;                          // %
@@ -159,6 +193,9 @@ public class BatteryManagementSystemParser {
 
         bmsData.maxCellVoltageNo = HexToInteger(line23.get(6));
         bmsData.minCellVoltageNo = HexToInteger(line24.get(1));
+
+        bmsData.fanStatus = CoolingFanSpeeds.fromInteger(HexToInteger(line24.get(2)));
+        bmsData.fanFeedbackSignal = HexToInteger(line24.get(3));
 
         bmsData.accumulativeChargeCurrent = ( ( HexToInteger(line24.get(5) ) << 24) +
                                               ( HexToInteger(line24.get(6) ) << 16) +

@@ -21,7 +21,7 @@ public class ObdBmsTest extends AndroidTestCase {
                            "7EC 22 1E 0C DD 0E 0D 0E 0D \n" +
                            "7EA 22 00 00 00 00 00 00 00 \n" +
                            "7EC 23 0D 0D 0C 00 0F AB 34 \n" +
-                           "7EC 24 AB 43 00 00 84 00 00 \n" +
+                           "7EC 24 AB 43 06 56 84 00 00 \n" +
                            "7EC 25 44 D4 00 00 49 F8 00 \n" +
                            "7EC 26 00 19 B3 00 00 1A EA \n" +
                            "7EC 27 00 09 EC 96 45 01 45 \n" +
@@ -95,6 +95,8 @@ public class ObdBmsTest extends AndroidTestCase {
         Assert.assertEquals(689.0, parsedData.accumulativeDischargePower, 1e-6);
         Assert.assertEquals(650390, parsedData.accumulativeOperatingTime);
         Assert.assertEquals(0, parsedData.driveMotorSpeed);
+        Assert.assertEquals(BatteryManagementSystemParser.CoolingFanSpeeds.FAN_6TH, parsedData.fanStatus);
+        Assert.assertEquals(86, parsedData.fanFeedbackSignal);
     }
 
     public void test2102() {
