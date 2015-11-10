@@ -104,7 +104,7 @@ public class Protocol {
             }
 
             if(message != null) {
-                // Add the Messabe object to the processing queue
+                // Add the Message object to the processing queue
                 addMessageToProcessingQueue(message);
             }
         }
