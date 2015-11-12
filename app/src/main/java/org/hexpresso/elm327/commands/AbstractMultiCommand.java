@@ -21,7 +21,8 @@ public abstract class AbstractMultiCommand implements Command {
             rawResponse += command.getResponse().rawResponse() + "\\n";
         }
 
-        mRawResponse = new Response(rawResponse);
+        mRawResponse = new Response();
+        mRawResponse.setRawResponse(rawResponse);
     }
 
     @Override
