@@ -1,2 +1,0 @@
-configurations.create("default")
-artifacts.add("default", file('Android-BluetoothSPPLibrary-1.0-release.aar'))

@@ -2,25 +2,20 @@ package org.hexpresso.soulevspy.io;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.hexpresso.elm327.io.ServiceStates;
+import org.hexpresso.elm327.io.bluetooth.BluetoothService;
 import org.hexpresso.soulevspy.R;
+import org.hexpresso.soulevspy.activity.MainActivity;
 import org.hexpresso.soulevspy.util.ClientSharedPreferences;
-
-import app.akexorcist.bluetotohspp.library.BluetoothSPP;
-import app.akexorcist.bluetotohspp.library.BluetoothState;
 
 /**
  * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-03.
  */
-public class OBD2Device implements BluetoothSPP.OnDataReceivedListener,
-                                   BluetoothSPP.BluetoothConnectionListener,
-                                   BluetoothSPP.BluetoothStateListener {
-    final BluetoothSPP mBluetoothDevice;
-    final boolean      mIsBluetoothAvailable;
-
+public class OBD2Device implements BluetoothService.ServiceStateListener {
+    final BluetoothService mBluetoothService;
     final ClientSharedPreferences mSharedPreferences;
     final Context mContext;
 
@@ -32,29 +27,17 @@ public class OBD2Device implements BluetoothSPP.OnDataReceivedListener,
         mSharedPreferences = sharedPreferences;
         mContext = sharedPreferences.getContext();
 
-        mBluetoothDevice = new BluetoothSPP(mContext);
-        mIsBluetoothAvailable = mBluetoothDevice.isBluetoothAvailable();
+        mBluetoothService = new BluetoothService();
+        mBluetoothService.setServiceStateListener(this);
 
         // Start Bluetooth service
-        if (mIsBluetoothAvailable) {
-            mBluetoothDevice.setOnDataReceivedListener(this);
-            mBluetoothDevice.setBluetoothConnectionListener(this);
-            mBluetoothDevice.setBluetoothStateListener(this);
-            mBluetoothDevice.setupService();
-            mBluetoothDevice.setDeviceTarget(BluetoothState.DEVICE_OTHER);
+        if (mBluetoothService.isBluetoothAvailable()) {
+            mBluetoothService.useSecureConnection(true);
         }
     }
 
-    /**
-     * Verifies if Bluetooth is available
-     * @return
-     */
-    public boolean isBluetoothAvailable() {
-        return mIsBluetoothAvailable;
-    }
-
     public boolean connect() {
-        boolean isDeviceValid = mIsBluetoothAvailable;
+        boolean isDeviceValid = mBluetoothService.isBluetoothAvailable();
 
         if ( isDeviceValid ) {
             String btAddress = mSharedPreferences.getBluetoothDeviceStringValue();
@@ -65,16 +48,9 @@ public class OBD2Device implements BluetoothSPP.OnDataReceivedListener,
             if (!btAddress.equals(mSharedPreferences.DEFAULT_BLUETOOTH_DEVICE) && (bta != null)) {
                 // Set the bluetooth adapter name as summary
                 try {
-                    if( mBluetoothDevice.isServiceAvailable() )
-                    {
-                        mBluetoothDevice.connect(btAddress);
-                        isDeviceValid = true;
-                    }
-                    else
-                    {
-                        Toast.makeText(mContext, R.string.error_bluetooth_service_not_available, Toast.LENGTH_LONG).show();
-                        isDeviceValid = false;
-                    }
+                    mBluetoothService.setDevice(btAddress);
+                    mBluetoothService.connect();
+                    isDeviceValid = true;
                 } catch (IllegalArgumentException e) {
                     isDeviceValid = false;
                 }
@@ -96,61 +72,39 @@ public class OBD2Device implements BluetoothSPP.OnDataReceivedListener,
     }
 
     public boolean disconnect() {
-        mBluetoothDevice.disconnect();
+        mBluetoothService.disconnect();
         return true;
     }
 
-    public void stopService() {
-        mBluetoothDevice.stopService();
-    }
-
-    public void sendData(String data) {
-        mBluetoothDevice.send(data, true);
-    }
-
-    public void onDataReceived(byte[] data, String message) {
-        Log.i("Check", "Length : " + data.length);
-        Log.i("Check", "Message : " + message);
-    }
-
-    public void onDeviceConnected(String name, String address) {
-        // Do something when successfully connected
-        Toast.makeText(mContext, "Connected to " + name + " (" + address + ")", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onDeviceDisconnected() {
-        // Do something when connection was disconnected
-        Toast.makeText(mContext, "Disconnected", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onDeviceConnectionFailed() {
-        // Do something when connection failed
-        Toast.makeText(mContext, "Connection failed", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onServiceStateChanged(int state) {
+    @Override
+    public void onServiceStateChanged(ServiceStates state) {
         String message = null;
-        if(state == BluetoothState.STATE_CONNECTED) {
-            // Do something when successfully connected
-            message = "STATE_CONNECTED";
-        }
-        else if(state == BluetoothState.STATE_CONNECTING){
-            // Do something while connecting
-            message = "STATE_CONNECTING";
-        }
-        else if(state == BluetoothState.STATE_LISTEN) {
-            // Do something when device is waiting for connection
-            message = "STATE_LISTEN";
-        }
-        else if(state == BluetoothState.STATE_NONE) {
-            // Do something when device don't have any connection
-            message = "STATE_NONE";
+        switch(state) {
+            case STATE_CONNECTING:
+                message = "Connecting...";
+                break;
+            case STATE_CONNECTED:
+                message = "Connected";
+                break;
+            case STATE_DISCONNECTING:
+                message = "Disconnecting...";
+                break;
+            case STATE_DISCONNECTED:
+                message = "Disconnected";
+                break;
+            default:
+                // Do nothing
+                break;
         }
 
-        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-    }
+        final String msg = message;
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("SoulEVSpy", String.format("onActivityResult: %d, %d", requestCode, resultCode));
+        // TODO : This is just for a test!
+        ((MainActivity)mContext).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

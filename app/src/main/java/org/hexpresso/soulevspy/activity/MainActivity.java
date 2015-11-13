@@ -213,14 +213,4 @@ public class MainActivity extends AppCompatActivity implements Drawer.OnDrawerIt
             super.onBackPressed();
         }
     }
-
-    /**
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mDevice.onActivityResult(requestCode, resultCode, data);
-    }
 }
