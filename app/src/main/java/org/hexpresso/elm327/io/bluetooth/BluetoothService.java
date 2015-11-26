@@ -155,11 +155,11 @@ public class BluetoothService extends Service {
     public boolean isBluetoothAvailable() {
         if(mBluetoothAvailable == null) {
             try {
-                mBluetoothAvailable = new Boolean((mBluetoothAdapter != null) && (!mBluetoothAdapter.getAddress().equals((Object) null)));
+                mBluetoothAvailable = (mBluetoothAdapter != null) && (!(mBluetoothAdapter.getAddress() == null));
             } catch (NullPointerException e) {
-                mBluetoothAvailable = new Boolean(false);
+                mBluetoothAvailable = false;
             }
         }
-        return mBluetoothAvailable.booleanValue();
+        return mBluetoothAvailable;
     }
 }

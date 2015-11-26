@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-26.
  */
 public abstract class AbstractMultiCommand implements Command {
 
-    private ArrayList<Command> mCommands = new ArrayList<>();
+    private List<Command> mCommands = new ArrayList<>();
     protected Response mRawResponse = null;                    // Raw response data (for all commands)
 
     @Override

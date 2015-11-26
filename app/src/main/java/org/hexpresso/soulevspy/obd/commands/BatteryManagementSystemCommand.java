@@ -30,8 +30,8 @@ public class BatteryManagementSystemCommand extends AbstractCommand {
      */
     public double getStateOfCharge() {
         if (stateOfCharge == null) {
-            stateOfCharge = new Double( getResponse().get(1, 1) * 0.5);
+            stateOfCharge = getResponse().get(1, 1) * 0.5;
         }
-        return stateOfCharge.doubleValue();
+        return stateOfCharge;
     }
 }

@@ -14,7 +14,7 @@ public class PrintVersionIdCommand extends AbstractCommand {
 
     public String getVersion() {
         if (version == null) {
-            version = new String(getResponse().getLines().get(0));
+            version = getResponse().getLines().get(0);
         }
         return version;
     }

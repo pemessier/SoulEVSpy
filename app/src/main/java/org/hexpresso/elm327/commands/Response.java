@@ -2,14 +2,15 @@ package org.hexpresso.elm327.commands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Pierre-Etienne Messier <pierre.etienne.messier@gmail.com> on 2015-10-24.
  */
 public class Response {
     private String            mRawResponse   = null;            // The raw ELM327 response as string
-    private ArrayList<String> mResponseLines = null;            // Each array element represents a line
-    private ArrayList<ResponseFilter> mResponseFilters = null;  // Response filters
+    private List<String> mResponseLines = null;            // Each array element represents a line
+    private List<ResponseFilter> mResponseFilters = null;  // Response filters
 
     /**
      * Constructor
@@ -44,7 +45,7 @@ public class Response {
     public void process() {
         if (mResponseLines == null) {
             final String[] lines = mRawResponse.replaceAll("\\r", "").split("\\n");
-            mResponseLines = new ArrayList(Arrays.asList(lines));
+            mResponseLines = new ArrayList<>(Arrays.asList(lines));
         }
 
         // Execute response filters (if any)
@@ -55,7 +56,7 @@ public class Response {
         }
     }
 
-    public ArrayList<String> getLines() {
+    public List<String> getLines() {
         return mResponseLines;
     }
 

@@ -19,6 +19,6 @@ public class ReadInputVoltageCommand extends AbstractCommand {
         if (voltage == null) {
             voltage = new Double(getResponse().getLines().get(0));
         }
-        return voltage.doubleValue();
+        return voltage;
     }
 }
