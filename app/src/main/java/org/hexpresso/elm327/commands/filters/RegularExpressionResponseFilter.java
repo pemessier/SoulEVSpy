@@ -4,6 +4,7 @@ import org.hexpresso.elm327.commands.Response;
 import org.hexpresso.elm327.commands.ResponseFilter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,7 +25,7 @@ public class RegularExpressionResponseFilter implements ResponseFilter {
 
     @Override
     public void onResponseReceived(Response response) {
-        ArrayList<String> lines = response.getLines();
+        List<String> lines = response.getLines();
 
         ListIterator<String> it = lines.listIterator();
         while(it.hasNext()) {
